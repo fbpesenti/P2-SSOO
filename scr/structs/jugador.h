@@ -5,12 +5,9 @@ typedef struct jugador Jugador;
 
 struct jugador
 {
-  // Nombre
   char* nombre;
-  // id
   int id;
-  // 0 si no es lider 1 si lo es
-  int es_lider;
+  int es_lider; // 0 si no es lider 1 si lo es
   // Recursos del jugador
   int oro;
   int comida;
@@ -31,6 +28,10 @@ struct jugador
   int nivel_agricultores;
   int nivel_ingenieros;
   int nivel_guerreros;
+  int nivel_ataque;
+  int nivel_defensa;
+  int defensa;
+  int fuerza;
 };
 
 // Inicializar el jugador con los stats iniciales
@@ -43,8 +44,14 @@ void asignar_aldeano(Jugador* jug, int tipo);
 void crear_aldeano(Jugador* jug, int tipo);
 // Mostrar información en menu (recursos, aldeano, niveles de aldeanos)
 void mostrar_menu(Jugador* jug);
+
 // Subir de nivel a x cosa (agri, mineros, ingenieros, ataque, defensa)
 void subir_nivel(Jugador* jug, int tipo);
+//la funcion de arriba utiliza estas sub funciones
+void subir_nivel_minero(Jugador* jug);
+void subir_nivel_agricultor(Jugador* jug);
+void subir_nivel_ingeniero(Jugador* jug);
+void subir_nivel_guerreros(Jugador* jug);
 // Atacar contrincante
 void atacar(Jugador* curr, Jugador* other);
 // Espiar
@@ -55,4 +62,6 @@ void robar(Jugador* curr, Jugador* other);
 void pasar(Jugador* jug);
 // Rendirse
 void rendirse(Jugador* jug);
+
+void mostrar_informacion(Jugador* jug);
 
