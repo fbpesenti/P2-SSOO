@@ -38,18 +38,13 @@ Jugador* jugador_init(char* nombre, int id);
 // Se recolectan recursos al inicio del turno
 void recolectar_recursos(Jugador* jug);
 // Asignar aldeano inicialmente
-/*
-No se si hacer la asignacion separada de crear aldeanos 
-Se diferencian que la asignacionse hace al inicio y se van descontando de los 9 aldeanos iniciales
-y la segunda es dentro del juego mismo ya inciado
-*/ 
 void asignar_aldeano(Jugador* jug, int tipo);
 // Crear el aldeano segun el tipo requerido (minero, agricultor, ingeniero, guerrero)
 void crear_aldeano(Jugador* jug, int tipo);
 // Mostrar información en menu (recursos, aldeano, niveles de aldeanos)
 void mostrar_menu(Jugador* jug);
 // Subir de nivel a x cosa (agri, mineros, ingenieros, ataque, defensa)
-void subir_nive(Jugador* jug, int tipo);
+void subir_nivel(Jugador* jug, int tipo);
 // Atacar contrincante
 void atacar(Jugador* curr, Jugador* other);
 // Espiar
