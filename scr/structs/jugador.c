@@ -32,6 +32,13 @@ Jugador* jugador_init(char* nombre, int id){
 
 }
 
-// void recolectar_recursos(Jugador* jug){
+void recolectar_recursos(Jugador* jug){
+  
+  int new_oro = jug->n_mineros*jug->nivel_minero*2;
+  int new_comida = jug->n_agricultores*jug->nivel_agricultores*2;
+  int new_ciencia = jug->n_ingenieros*jug->nivel_ingenieros;
 
-// }
+  jug->oro = jug->oro+new_oro;
+  jug->comida = jug->comida+new_comida;
+  jug->ciencia = jug->ciencia+new_ciencia; 
+}
