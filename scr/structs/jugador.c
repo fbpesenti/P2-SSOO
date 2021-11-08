@@ -68,7 +68,36 @@ void asignar_aldeano(Jugador* jug, int tipo){
   {
     jug->n_guerreros ++;
   }
+  // restar un aldeano de los 9 iniciales
   jug->aldeanos=jug->aldeanos-1;
   
 }
+
+void crear_aldeano(Jugador* jug, int tipo){
+  if (tipo = 1)
+  {
+   jug->n_mineros++; 
+   jug->comida=jug->comida-10;
+   jug->oro=jug->oro-5;
+  }
+  else if (tipo=2)
+  {
+    jug->n_agricultores++;
+    jug->comida=jug->comida-10;
+    jug->oro=jug->oro-5;
+  }
+  else if (tipo=3)
+  {
+    jug->n_ingenieros++;
+    jug->comida=jug->comida-20;
+    jug->oro=jug->oro-10;
+  }
+  else if (tipo=4)
+  {
+    jug->n_guerreros ++;
+    jug->comida=jug->comida-10;
+    jug->oro=jug->oro-10;
+  }
+}
+
 
