@@ -100,4 +100,13 @@ void crear_aldeano(Jugador* jug, int tipo){
   }
 }
 
+void mostrar_menu(Jugador* jug){
+  /* 
+    -Debe mostrar la cantidad de recursos
+    -la cantidad de aldeanos en cada rol
+    -nivel de cada rol
+    No lo implemente porque no se si se deben imprimir o pasarlos 
+    como un mensaje del socket?
+  */ 
+}
 
