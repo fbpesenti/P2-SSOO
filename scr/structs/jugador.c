@@ -37,8 +37,38 @@ void recolectar_recursos(Jugador* jug){
   int new_oro = jug->n_mineros*jug->nivel_minero*2;
   int new_comida = jug->n_agricultores*jug->nivel_agricultores*2;
   int new_ciencia = jug->n_ingenieros*jug->nivel_ingenieros;
-
+  // Se recolectan los recursos y se agregan a los atributos
   jug->oro = jug->oro+new_oro;
   jug->comida = jug->comida+new_comida;
-  jug->ciencia = jug->ciencia+new_ciencia; 
+  jug->ciencia = jug->ciencia+new_ciencia;
+
+  /*No se si imprimir aqui o hacemos una funcion que imprime despues*/ 
 }
+
+void asignar_aldeano(Jugador* jug, int tipo){
+  /* El tipo se designa por el numero
+    1 = minero
+    2 = agricultor
+    3 = ingeniero
+    4 = guerrero
+  */ 
+  if (tipo = 1)
+  {
+   jug->n_mineros++; 
+  }
+  else if (tipo=2)
+  {
+    jug->n_agricultores++;
+  }
+  else if (tipo=3)
+  {
+    jug->n_ingenieros++;
+  }
+  else if (tipo=4)
+  {
+    jug->n_guerreros ++;
+  }
+  jug->aldeanos=jug->aldeanos-1;
+  
+}
+
