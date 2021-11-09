@@ -77,7 +77,7 @@ void asignar_aldeano(Jugador* jug, int tipo){
 void crear_aldeano(Jugador* jug, int tipo){
   if (tipo = 1)
   {
-    if (jug->comida >10 & jug->oro >5)
+    if (jug->comida >=10 & jug->oro >=5)
     {
       jug->n_mineros++; 
       jug->comida=jug->comida-10;
@@ -86,7 +86,7 @@ void crear_aldeano(Jugador* jug, int tipo){
   }
   else if (tipo=2)
   {
-    if (jug->comida >10)
+    if (jug->comida >=10)
     {
       jug->n_agricultores++;
       jug->comida=jug->comida-10;
@@ -94,7 +94,7 @@ void crear_aldeano(Jugador* jug, int tipo){
   }
   else if (tipo=3)
   {
-    if (jug->comida >20 & jug->oro >10)
+    if (jug->comida >=20 & jug->oro >=10)
     {
       jug->n_ingenieros++;
       jug->comida=jug->comida-20;
@@ -103,7 +103,7 @@ void crear_aldeano(Jugador* jug, int tipo){
   }
   else if (tipo=4)
   {
-    if (jug->comida >10 & jug->oro >10)
+    if (jug->comida >=10 & jug->oro >=10)
     {
       jug->n_guerreros ++;
       jug->comida=jug->comida-10;
@@ -134,6 +134,7 @@ void mostrar_informacion(Jugador* jug){
   printf("Recursos\n");
   printf("Comida: %i\n", jug->comida);
   printf("Oro: %i\n", jug->oro);
+  printf("Ciencia: %i\n", jug->ciencia);
 
   printf("Aldeanos\n");
   printf("Agricultores: %i - Nivel: %i\n", jug->n_agricultores, jug->nivel_agricultores);
@@ -357,9 +358,12 @@ void subir_nivel(Jugador* jug, int tipo){
 }
 //---------curr ataca a other ---------
 void atacar(Jugador* curr, Jugador* other){
-  curr->fuerza = curr->nivel_guerreros * curr->nivel_ataque;
-  other->nivel_defensa = (other->nivel_guerreros * other->nivel_ataque) * 2;
-  if (curr > other){
+  //curr->fuerza = curr->nivel_guerreros * curr->nivel_ataque;
+  //other->nivel_defensa = (other->nivel_guerreros * other->nivel_ataque) * 2;
+  int fuerza_atacante = curr->n_guerreros*curr->nivel_ataque;
+  int fuerza_defensor = other->n_guerreros*other->nivel_defensa*2;
+  if (fuerza_atacante>fuerza_defensor){
+  //if (curr > other){
     curr->comida += other->comida;
     other->comida = 0;
     curr->oro += other->oro;
@@ -377,7 +381,7 @@ void atacar(Jugador* curr, Jugador* other){
 }
 //-----------curr espia a other---------------
 void espiar(Jugador* curr, Jugador* other){
-  if (curr->oro>30){
+  if (curr->oro>=30){
     curr->oro -= 30;
     printf("Espiando....\n");
     printf("cantidad guerreros: %i", other->n_guerreros);
@@ -385,13 +389,55 @@ void espiar(Jugador* curr, Jugador* other){
     printf("nivel ataque: %i", other->nivel_ataque);
 
   } else{
-    printf("no hay suficientes recursos\n");
+    printf("No hay suficientes recursos\n");
   }
 
 }
 //--------------------------
 
+//---------curr roba a other -------------------
+//recurso_robar es un int que representa si eligio robar comida o oro
+//recurso_robar=0 es comida y recurso_robar=1 es oro
+void robar(Jugador* curr, Jugador* other, int recurso_robar){
+  if (curr->ciencia>=10){
+    curr->ciencia-=10;
+    printf("Robando recursos.....\n");
+    if (recurso_robar==0){
+      int comida_robada = (other->comida)*0,1;
+      other->comida-=comida_robada;
+      curr->comida+=comida_robada;
+      printf("El jugador con id %i le ha robado %i de comida a el jugador con id %i\n", curr->id, comida_robada, other->id);
+    }
+    if (recurso_robar==1){
+      int oro_robado = (other->oro)*0,1;
+      other->oro-=oro_robado;
+      curr->oro+=oro_robado;
+      printf("El jugador con id %i le ha robado %i de oro a el jugador con id %i\n", curr->id, oro_robado, other->id);
+    }
+  }
+  else {
+    printf("No hay sufiecientes recursos para realizar esta accion\n");
+  }
+}
 
+//Aqui se deberia pasar al siguiente turno pero aun no se como hacerlo
+//Yo creo que se deberia manejar en flujo principal
+void pasar(Jugador* jug){
+  printf("Se ha termiando el turno actual\n");
+}
+
+void rendirse(Jugador* jug){
+  printf("Jugador con id %i se ha rendido\n", jug->id);
+  jug->oro = 0;
+  jug->comida = 0;
+  jug->ciencia = 0;
+  jug->n_mineros = 0;
+  jug->n_agricultores = 0;
+  jug->n_ingenieros = 0;
+  jug->n_guerreros = 0;
+  //Aqui hay que eliminar al jugador de los jugadores activos
+
+}
 
 int main(int argc, char const *argv[])
 {
