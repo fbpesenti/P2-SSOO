@@ -41,14 +41,18 @@ int main(int argc, char *argv[]){
   {
     char *welcome = (char*)malloc(23 * sizeof(char));
     sprintf(welcome, "Bienvenido Cliente %d!!", i);
-    server_send_message(sockets_array[i], 1, welcome);
+    server_send_message(sockets_array[i], 0, welcome);
     free(welcome);
     int msg_code = server_receive_id(sockets_array[i]);
     char * client_name = server_receive_payload(sockets_array[i]);
     jugadores_array[i] = jugador_init(client_name, i);
+    // printf("%s\n", client_name);
     printf("nombre jugador %d: %s\n", jugadores_array[i]->id, jugadores_array[i]->nombre);
   }
 
+  char* game_begin = "inicio el juego";
+  server_send_message(sockets_array[0], 1, game_begin);
+  
   int my_attention = 0;
   while (1)
   {
