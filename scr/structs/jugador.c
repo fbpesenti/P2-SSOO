@@ -77,7 +77,7 @@ void asignar_aldeano(Jugador* jug, int tipo){
 void crear_aldeano(Jugador* jug, int tipo){
   if (tipo = 1)
   {
-    if (jug->comida >=10 & jug->oro >=5)
+    if (jug->comida >=10 && jug->oro >=5)
     {
       jug->n_mineros++; 
       jug->comida=jug->comida-10;
@@ -94,7 +94,7 @@ void crear_aldeano(Jugador* jug, int tipo){
   }
   else if (tipo=3)
   {
-    if (jug->comida >=20 & jug->oro >=10)
+    if (jug->comida >=20 && jug->oro >=10)
     {
       jug->n_ingenieros++;
       jug->comida=jug->comida-20;
@@ -103,7 +103,7 @@ void crear_aldeano(Jugador* jug, int tipo){
   }
   else if (tipo=4)
   {
-    if (jug->comida >=10 & jug->oro >=10)
+    if (jug->comida >=10 && jug->oro >=10)
     {
       jug->n_guerreros ++;
       jug->comida=jug->comida-10;
@@ -146,57 +146,78 @@ void mostrar_informacion(Jugador* jug){
 //--subir nivel--------------------------
 
 void subir_nivel_minero(Jugador* jug){
-  if (jug->nivel_minero == 1){
-      if (jug->comida>10 & jug->oro>10 & jug->ciencia>10){
-        jug->comida -= 10;
-        jug->oro -= 10;
-        jug->ciencia -= 10;
-        jug->nivel_minero += 1;
-        printf("AUMENTO DE NIVEL: 1-> 2\n");
-        return;
-      }
-    }
-    else if (jug->nivel_minero == 2){
-      if (jug->comida>20 & jug->oro>20 & jug->ciencia>20){
-        jug->comida -= 20;
-        jug->oro -= 20;
-        jug->ciencia -= 20;
-        jug->nivel_minero += 1;
-        printf("AUMENTO DE NIVEL: 2-> 3\n");
-        return;
-      }
-      printf("faltan recursos :(\n");
-    }
-    else if (jug->nivel_minero == 3){
-      if (jug->comida>30 & jug->oro>30 & jug->ciencia>30){
-        jug->comida -= 30;
-        jug->oro -= 30;
-        jug->ciencia -= 30;
-        jug->nivel_minero += 1;
-        printf("AUMENTO DE NIVEL: 3-> 4\n");
-        return;
-      }
-      printf("faltan recursos :(\n");
-    }
-    else if (jug->nivel_minero == 4){
-      if (jug->comida>40 & jug->oro>40 & jug->ciencia>40){
-        jug->comida -= 40;
-        jug->oro -= 40;
-        jug->ciencia -= 40;
-        jug->nivel_minero += 1;
-        printf("AUMENTO DE NIVEL: 4-> 5\n");
-        return;
-      }
-      printf("faltan recursos :(\n");
-    }
-    else if (jug->nivel_minero == 5){
-      printf("Estas en el nivel maximo\n");
-      return;
-    }
+  int cantidad_necesaria = jug->nivel_minero*10;
+  if (jug->nivel_minero<5 && jug->comida>=cantidad_necesaria && jug->oro>=cantidad_necesaria && jug->ciencia>=cantidad_necesaria){
+    jug->comida-=cantidad_necesaria;
+    jug->oro-=cantidad_necesaria;
+    jug->ciencia-=cantidad_necesaria;
+    jug->nivel_minero+=1;
+    printf("AUMENTO DE NIVEL: %i -> %i\n", jug->nivel_minero-1, jug->nivel_minero);
+    return;
+  }
+  if (jug->nivel_minero==5){
+    printf("Estas en el nivel maximo\n");
+    return;
+  }
+  else {
+    printf("Faltan recursos para poder subir de nivel\n");
+    return;
+  }
 }
+
+//void subir_nivel_minero(Jugador* jug){
+//  if (jug->nivel_minero == 1){
+//      if (jug->comida>=10 && jug->oro>=10 && jug->ciencia>=10){
+//        jug->comida -= 10;
+//        jug->oro -= 10;
+//        jug->ciencia -= 10;
+//        jug->nivel_minero += 1;
+//        printf("AUMENTO DE NIVEL: 1-> 2\n");
+//        return;
+//      }
+//    }
+//    else if (jug->nivel_minero == 2){
+//      if (jug->comida>=20 && jug->oro>=20 && jug->ciencia>=20){
+//        jug->comida -= 20;
+//        jug->oro -= 20;
+//        jug->ciencia -= 20;
+//        jug->nivel_minero += 1;
+//        printf("AUMENTO DE NIVEL: 2-> 3\n");
+//        return;
+//      }
+//      printf("faltan recursos :(\n");
+//    }
+//    else if (jug->nivel_minero == 3){
+//      if (jug->comida>=30 && jug->oro>=30 && jug->ciencia>=30){
+//        jug->comida -= 30;
+//        jug->oro -= 30;
+//        jug->ciencia -= 30;
+//        jug->nivel_minero += 1;
+//        printf("AUMENTO DE NIVEL: 3-> 4\n");
+//        return;
+//      }
+//      printf("faltan recursos :(\n");
+//    }
+//    else if (jug->nivel_minero == 4){
+//      if (jug->comida>=40 && jug->oro>=40 && jug->ciencia>=40){
+//        jug->comida -= 40;
+//        jug->oro -= 40;
+//        jug->ciencia -= 40;
+//        jug->nivel_minero += 1;
+//        printf("AUMENTO DE NIVEL: 4-> 5\n");
+//        return;
+//      }
+//      printf("faltan recursos :(\n");
+//    }
+//    else if (jug->nivel_minero == 5){
+//      printf("Estas en el nivel maximo\n");
+//      return;
+//    }
+//}
+
 void subir_nivel_agricultor(Jugador* jug){
   if (jug->nivel_agricultores == 1){
-      if (jug->comida>10 & jug->oro>10 & jug->ciencia>10){
+      if (jug->comida>=10 && jug->oro>=10 && jug->ciencia>=10){
         jug->comida -= 10;
         jug->oro -= 10;
         jug->ciencia -= 10;
@@ -206,7 +227,7 @@ void subir_nivel_agricultor(Jugador* jug){
       }
     }
     else if (jug->nivel_agricultores == 2){
-      if (jug->comida>20 & jug->oro>20 & jug->ciencia>20){
+      if (jug->comida>=20 && jug->oro>=20 && jug->ciencia>=20){
         jug->comida -= 20;
         jug->oro -= 20;
         jug->ciencia -= 20;
@@ -217,7 +238,7 @@ void subir_nivel_agricultor(Jugador* jug){
       printf("faltan recursos :(\n");
     }
     else if (jug->nivel_agricultores == 3){
-      if (jug->comida>30 & jug->oro>30 & jug->ciencia>30){
+      if (jug->comida>=30 && jug->oro>=30 && jug->ciencia>=30){
         jug->comida -= 30;
         jug->oro -= 30;
         jug->ciencia -= 30;
@@ -228,7 +249,7 @@ void subir_nivel_agricultor(Jugador* jug){
       printf("faltan recursos :(\n");
     }
     else if (jug->nivel_agricultores == 4){
-      if (jug->comida>40 & jug->oro>40 & jug->ciencia>40){
+      if (jug->comida>=40 && jug->oro>=40 && jug->ciencia>=40){
         jug->comida -= 40;
         jug->oro -= 40;
         jug->ciencia -= 40;
@@ -245,7 +266,7 @@ void subir_nivel_agricultor(Jugador* jug){
 }
 void subir_nivel_ingeniero(Jugador* jug){
   if (jug->nivel_ingenieros == 1){
-      if (jug->comida>10 & jug->oro>10 & jug->ciencia>10){
+      if (jug->comida>=10 && jug->oro>=10 && jug->ciencia>=10){
         jug->comida -= 10;
         jug->oro -= 10;
         jug->ciencia -= 10;
@@ -255,7 +276,7 @@ void subir_nivel_ingeniero(Jugador* jug){
       }
     }
     else if (jug->nivel_ingenieros == 2){
-      if (jug->comida>20 & jug->oro>20 & jug->ciencia>20){
+      if (jug->comida>=20 && jug->oro>=20 && jug->ciencia>=20){
         jug->comida -= 20;
         jug->oro -= 20;
         jug->ciencia -= 20;
@@ -266,7 +287,7 @@ void subir_nivel_ingeniero(Jugador* jug){
       printf("faltan recursos :(\n");
     }
     else if (jug->nivel_ingenieros == 3){
-      if (jug->comida>30 & jug->oro>30 & jug->ciencia>30){
+      if (jug->comida>=30 && jug->oro>=30 && jug->ciencia>=30){
         jug->comida -= 30;
         jug->oro -= 30;
         jug->ciencia -= 30;
@@ -277,7 +298,7 @@ void subir_nivel_ingeniero(Jugador* jug){
       printf("faltan recursos :(\n");
     }
     else if (jug->nivel_ingenieros == 4){
-      if (jug->comida>40 & jug->oro>40 & jug->ciencia>40){
+      if (jug->comida>=40 && jug->oro>=40 && jug->ciencia>=40){
         jug->comida -= 40;
         jug->oro -= 40;
         jug->ciencia -= 40;
@@ -294,7 +315,7 @@ void subir_nivel_ingeniero(Jugador* jug){
 }
 void subir_nivel_guerrero(Jugador* jug){
   if (jug->nivel_guerreros == 1){
-      if (jug->comida>10 & jug->oro>10 & jug->ciencia>10){
+      if (jug->comida>=10 && jug->oro>=10 && jug->ciencia>=10){
         jug->comida -= 10;
         jug->oro -= 10;
         jug->ciencia -= 10;
@@ -305,7 +326,7 @@ void subir_nivel_guerrero(Jugador* jug){
       }
     }
     else if (jug->nivel_guerreros == 2){
-      if (jug->comida>20 & jug->oro>20 & jug->ciencia>20){
+      if (jug->comida>=20 && jug->oro>=20 && jug->ciencia>=20){
         jug->comida -= 20;
         jug->oro -= 20;
         jug->ciencia -= 20;
@@ -317,7 +338,7 @@ void subir_nivel_guerrero(Jugador* jug){
       printf("faltan recursos :(\n");
     }
     else if (jug->nivel_guerreros == 3){
-      if (jug->comida>30 & jug->oro>30 & jug->ciencia>30){
+      if (jug->comida>=30 && jug->oro>=30 && jug->ciencia>=30){
         jug->comida -= 30;
         jug->oro -= 30;
         jug->ciencia -= 30;
@@ -329,7 +350,7 @@ void subir_nivel_guerrero(Jugador* jug){
       printf("faltan recursos :(\n");
     }
     else if (jug->nivel_guerreros == 4){
-      if (jug->comida>40 & jug->oro>40 & jug->ciencia>40){
+      if (jug->comida>=40 && jug->oro>=40 && jug->ciencia>=40){
         jug->comida -= 40;
         jug->oro -= 40;
         jug->ciencia -= 40;
