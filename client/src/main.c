@@ -31,17 +31,13 @@ int main (int argc, char *argv[]){
     
     if (msg_code == 1) { //Recibimos un mensaje del servidor
       char * message = client_receive_payload(server_socket);
-      printf("El servidor dice: %s\n", message);
+      printf("%s\n", message);
       free(message);
 
-      printf("¿Qué desea hacer?\n   1)Enviar mensaje al servidor\n   2)Enviar mensaje al otro cliente\n");
-      int option = getchar() - '0';
-      getchar(); //Para capturar el "enter" que queda en el buffer de entrada stdin
-      
-      printf("Ingrese su mensaje: ");
-      char * response = get_input();
+      printf("ingrese su nombre a continuacion: ");
+      char * name = get_input();
 
-      client_send_message(server_socket, option, response);
+      client_send_message(server_socket, 1, name);
     }
 
     if (msg_code == 2) { //Recibimos un mensaje que proviene del otro cliente

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "comunication.h"
 #include "conection.h"
+#include "../structs/jugador.h"
 
 char * revert(char * message){
   //Se invierte el mensaje
@@ -26,15 +27,28 @@ int main(int argc, char *argv[]){
   // Se crea el servidor y se obtienen los sockets de ambos clientes.
   PlayersInfo * players_info = prepare_sockets_and_get_clients(IP, PORT);
 
-  // Le enviamos al primer cliente un mensaje de bienvenida
-  char * welcome = "Bienvenido Cliente 1!!";
-  server_send_message(players_info->socket_c1, 1, welcome);
+  
 
   // Guardaremos los sockets en un arreglo e iremos alternando a quién escuchar.
   int sockets_array[4] = {players_info->socket_c1,
                           players_info->socket_c2,
                           players_info->socket_c3,
                           players_info->socket_c4};
+
+  Jugador** jugadores_array = calloc(4, sizeof(Jugador*)); // Array de jugadores
+
+  for (int i = 0; i < 4; i++)
+  {
+    char *welcome = (char*)malloc(23 * sizeof(char));
+    sprintf(welcome, "Bienvenido Cliente %d!!", i);
+    server_send_message(sockets_array[i], 1, welcome);
+    free(welcome);
+    int msg_code = server_receive_id(sockets_array[i]);
+    char * client_name = server_receive_payload(sockets_array[i]);
+    jugadores_array[i] = jugador_init(client_name, i);
+    printf("nombre jugador %d: %s\n", jugadores_array[i]->id, jugadores_array[i]->nombre);
+  }
+
   int my_attention = 0;
   while (1)
   {
