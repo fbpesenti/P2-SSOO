@@ -2,9 +2,9 @@
 
 ## Integrantes 
 - Francisco Balmaceda - 18623948
-- Victoria Briceño - 18623913
 - Josefa Parra - 19643098
 - Florencia Pesenti - 16640268
+- Victoria Sanchez - 18623913
 - Maria Paz Subiabre - 16640535 
 
 ## Instrucciones de Ejecución
