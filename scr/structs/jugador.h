@@ -42,8 +42,7 @@ void recolectar_recursos(Jugador* jug);
 void asignar_aldeano(Jugador* jug, int tipo);
 // Crear el aldeano segun el tipo requerido (minero, agricultor, ingeniero, guerrero)
 void crear_aldeano(Jugador* jug, int tipo);
-// Mostrar información en menu (recursos, aldeano, niveles de aldeanos)
-void mostrar_menu(Jugador* jug);
+
 
 // Subir de nivel a x cosa (agri, mineros, ingenieros, ataque, defensa)
 void subir_nivel(Jugador* jug, int tipo);
