@@ -1,4 +1,5 @@
 /obj
-/server
-/client
+client/client
+server/server
+server/obj
 
