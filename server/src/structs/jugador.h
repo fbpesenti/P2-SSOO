@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 
 struct jugador;
 typedef struct jugador Jugador;
@@ -41,7 +42,7 @@ void recolectar_recursos(Jugador* jug);
 // Asignar aldeano inicialmente
 void asignar_aldeano(Jugador* jug, int tipo);
 // Crear el aldeano segun el tipo requerido (minero, agricultor, ingeniero, guerrero)
-void crear_aldeano(Jugador* jug, int tipo);
+bool crear_aldeano(Jugador* jug, int tipo);
 
 
 // Subir de nivel a x cosa (agri, mineros, ingenieros, ataque, defensa)
@@ -56,7 +57,7 @@ void atacar(Jugador* curr, Jugador* other);
 // Espiar
 void espiar(Jugador* curr, Jugador* other);
 // Robar
-void robar(Jugador* curr, Jugador* other);
+void robar(Jugador* curr, Jugador* other, int recurso_robar);
 // Pasar
 void pasar(Jugador* jug);
 // Rendirse
