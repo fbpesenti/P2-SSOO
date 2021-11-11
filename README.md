@@ -21,7 +21,7 @@
 
 ##FUNCIONAMIENTO
 
-En server:
+En client:
 msg code: 10 -> mostrar info
 msg code: 11 -> crear Aldeano
 msg code: 13 -> subir nivel
@@ -30,3 +30,7 @@ msg code: 15 -> ESPIAR
 msg code: 16 -> robar
 msg code: 17 -> pasar
 msg code: 18 -> rendirse
+
+en server: la mayoria llega al msg code 11
+
+Las funciones.c de client se mandan slo mensajes al servidor
