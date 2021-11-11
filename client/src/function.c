@@ -2,8 +2,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "function.h"
+#include <stdbool.h> 
 
-void principal_menu(){
+bool principal_menu(int server_socket){
     printf("Menu Principal\n");
     printf("Escoger una accion:\n");
     printf("[0] Mostrar Informacion \n");
@@ -18,30 +19,59 @@ void principal_menu(){
     getchar();
     //printf("char: %c\n", c);
     if (c == '0'){
+        client_send_message(server_socket, 10, "mostar info");
         //mostrar info
     } else if (c == '1'){
-        char id = crear_aldeano();
-        printf("id %c\n", id);
+        char id = menu_crear_aldeano();//cambiar a str
+        if (id == '0'){
+            client_send_message(server_socket, 11, "minero");
+        } else if (id == '1'){
+            client_send_message(server_socket, 11, "agricultor");
+        } else if (id == '2'){
+            client_send_message(server_socket, 11, "ingeniero");
+        } else if (id == '3'){
+            client_send_message(server_socket, 11, "guerrero");
+        }
+        
+
     } else if (c == '2'){
-        char id = subir_nivel();
+        char id = menu_subir_nivel();
         printf("id %c\n", id);
+        if (id == '0'){
+            client_send_message(server_socket, 13, "minero");
+        } else if (id == '1'){
+            client_send_message(server_socket, 13, "agricultor");
+        } else if (id == '2'){
+            client_send_message(server_socket, 13, "ingeniero");
+        } else if (id == '3'){
+            client_send_message(server_socket, 13, "guerrero");
+        }
     } else if (c == '3'){
-        char id = atacar();
-        printf("id %c\n", id);
+        char id = menu_atacar();
+        client_send_message(server_socket, 14, "Atacar");
+        //printf("id %c\n", id);
     } else if (c == '4'){
-        char id = espiar();
-        printf("id %c\n", id);
+        char id = menu_espiar();
+        client_send_message(server_socket, 15, "espiar");
     } else if (c == '5'){
-        char* id = robar();
-        printf("[9] Oro \n");
-        printf("id %d\n", id[0]);
-        printf("id %d\n", id[1]);
-        printf("[10] Oro \n");
+        char* id = menu_robar();
+        client_send_message(server_socket, 16, "robar");
     }
+    else if (c == '6'){
+        printf("Fin del turno\n");
+        client_send_message(server_socket, 17, "pasar");
+        return false;
+    }
+    else if (c == '7'){
+        printf("rendirse\n");
+        client_send_message(server_socket, 18, "rendirse");
+        return false;
+    }
+    return true;
     
 }
 
-char crear_aldeano(){
+char menu_crear_aldeano(){
     printf("Menu Crear Aldeano\n");
     printf("Escoger rol a asignar...\n");
     printf("[0] Minero\n");
@@ -53,7 +83,7 @@ char crear_aldeano(){
     return x;
 }
 
-char subir_nivel(){
+char menu_subir_nivel(){
     printf("Menu Subir Nivel\n");
     printf("Escoger rol a subir de nivel...\n");
     printf("[0] Minero\n");
@@ -65,7 +95,7 @@ char subir_nivel(){
     return x;
 }
 
-char atacar(){
+char menu_atacar(){
     printf("Menu atacar\n");
     printf("Escoger jugador a atacar...\n");
     printf("[0] \n");
@@ -75,7 +105,7 @@ char atacar(){
     return x;
 }
 
-char espiar(){
+char menu_espiar(){
     printf("Menu Espiar\n");
     printf("Escoger jugador a espiar...\n");
     printf("[0] \n");
@@ -85,7 +115,7 @@ char espiar(){
     return x;
 }
 
-char * robar(){
+char * menu_robar(){
     printf("Menu Robar\n");
     printf("Escoger jugador a robar...\n");
     printf("[0] \n");
@@ -98,7 +128,7 @@ char * robar(){
     //VARIABLE SEGUN NUMERO DE JUGADORES
     char c2 = getchar();
     getchar();
-    char array[2];
+    char * array[2];
     printf("[0] Oro \n");
     array[0] = c1;
     printf("[1] Oro \n");
@@ -107,8 +137,10 @@ char * robar(){
     return array;
 }
 
-int main (int argc, char *argv[]){
-    principal_menu();
+
+
+//int main (int argc, char *argv[]){
+    //principal_menu();
     //crear_aldeano();
-    return 0;
-}
+    //return 0;
+//}

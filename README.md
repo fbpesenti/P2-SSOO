@@ -17,3 +17,16 @@
 ## Principales Funciones del programa
 
 ## Supuestos
+
+
+##FUNCIONAMIENTO
+
+En server:
+msg code: 10 -> mostrar info
+msg code: 11 -> crear Aldeano
+msg code: 13 -> subir nivel
+msg code: 14 -> atacar
+msg code: 15 -> ESPIAR
+msg code: 16 -> robar
+msg code: 17 -> pasar
+msg code: 18 -> rendirse

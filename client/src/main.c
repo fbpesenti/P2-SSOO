@@ -1,7 +1,9 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdbool.h> 
 #include "conection.h"
 #include "comunication.h"
+#include "function.h"
 
 char * get_input(){
   char * response = malloc(20);
@@ -41,21 +43,24 @@ int main (int argc, char *argv[]){
     }
     
     if (msg_code == 1) { //Recibimos un mensaje del servidor
+      printf("entre a code 1\n");
       char * message = client_receive_payload(server_socket);
       printf("El servidor dice: %s\n", message);
       free(message);
-
-      printf("¿Qué desea hacer?\n   1)Enviar mensaje al servidor\n   2)Enviar mensaje al otro cliente\n");
-      int option = getchar() - '0';
-      getchar(); //Para capturar el "enter" que queda en el buffer de entrada stdin
+      bool turno = true;
+      turno = principal_menu(server_socket);
       
-      printf("Ingrese su mensaje: ");
-      char * response = get_input();
 
-      client_send_message(server_socket, option, response);
+      //printf("¿Qué desea hacer?\n   1)Enviar mensaje al servidor\n   2)Enviar mensaje al otro cliente\n");
+      //int option = getchar() - '0';
+      //getchar(); //Para capturar el "enter" que queda en el buffer de entrada stdin
+      //printf("Ingrese su mensaje: ");
+      //char * response = get_input();
+      //client_send_message(server_socket, option, response);
     }
 
-    if (msg_code == 2) { //Recibimos un mensaje que proviene del otro cliente
+    if (msg_code == 2){ //Recibimos un mensaje que proviene del otro cliente
+    printf("entre a code 2\n");
       char * message = client_receive_payload(server_socket);
       printf("El otro cliente dice: %s\n", message);
       free(message);
@@ -69,7 +74,15 @@ int main (int argc, char *argv[]){
 
       client_send_message(server_socket, option, response);
     }
-    printf("------------------\n");
+    
+    if (msg_code == 11) { //Recibimos un mensaje del servidor
+      printf("entre a code 11\n");
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+    }
+    //printf("------------------\n");
+    
   }
 
   // Se cierra el socket

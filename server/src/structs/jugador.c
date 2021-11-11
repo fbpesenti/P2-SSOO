@@ -76,7 +76,8 @@ void asignar_aldeano(Jugador* jug, int tipo){
   
 }
 
-void crear_aldeano(Jugador* jug, int tipo){
+bool crear_aldeano(Jugador* jug, int tipo){
+  printf("jugador %i creara un tipo %i\n", jug->id, tipo);
   if (tipo = 1)
   {
     if (jug->comida >=10 && jug->oro >=5)
@@ -84,6 +85,12 @@ void crear_aldeano(Jugador* jug, int tipo){
       jug->n_mineros++; 
       jug->comida=jug->comida-10;
       jug->oro=jug->oro-5;
+      return true;
+    }
+    else{
+      printf("recursos insuficiente\n");
+      return false;
+
     }
   }
   else if (tipo=2)
@@ -416,13 +423,13 @@ void robar(Jugador* curr, Jugador* other, int recurso_robar){
     curr->ciencia-=10;
     printf("Robando recursos.....\n");
     if (recurso_robar==0){
-      int comida_robada = (other->comida)*0,1;
+      int comida_robada = (other->comida)*(0.1);
       other->comida-=comida_robada;
       curr->comida+=comida_robada;
       printf("El jugador con id %i le ha robado %i de comida a el jugador con id %i\n", curr->id, comida_robada, other->id);
     }
     if (recurso_robar==1){
-      int oro_robado = (other->oro)*0,1;
+      int oro_robado = (other->oro)*(0.1);
       other->oro-=oro_robado;
       curr->oro+=oro_robado;
       printf("El jugador con id %i le ha robado %i de oro a el jugador con id %i\n", curr->id, oro_robado, other->id);
@@ -452,8 +459,8 @@ void rendirse(Jugador* jug){
 
 }
 
-int main(int argc, char const *argv[])
-{
-  printf("\n:)\n");
-  return 0;
-}
+//int main(int argc, char const *argv[])
+//{
+  //printf("\n:)\n");
+  //return 0;
+//}
