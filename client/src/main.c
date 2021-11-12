@@ -25,20 +25,43 @@ int main (int argc, char *argv[]){
   // Se prepara el socket
   int server_socket = prepare_socket(IP, PORT);
 
-  // Se inicializa un loop para recibir todo tipo de paquetes y tomar una acción al respecto
-  while (1){
+  int intro = 1;
+
+  while(intro){
     int msg_code = client_receive_id(server_socket);
+
+    //aviso a lider de nueva conexion
+    if (msg_code == 0)
+    {
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+    }
     
-    if (msg_code == 0) { //Recibimos un mensaje del servidor
+    // solicitud de nombre
+    if (msg_code == 1) { //Recibimos un mensaje del servidor
       char * message = client_receive_payload(server_socket);
       printf("%s\n", message);
       free(message);
 
       printf("ingrese su nombre a continuacion: ");
       char * name = get_input();
-
       client_send_message(server_socket, 0, name);
     }
+    if (msg_code == 2) { //Recibimos soliitud de ingresar aldeano
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+
+      printf("ingrese opción: ");
+      char * opcion = get_input();
+      client_send_message(server_socket, 0, opcion);
+    }
+  }
+
+  // Se inicializa un loop para recibir todo tipo de paquetes y tomar una acción al respecto
+  while (1){
+    int msg_code = client_receive_id(server_socket);
+    
     
     if (msg_code == 1) { //Recibimos un mensaje del servidor
       char * message = client_receive_payload(server_socket);
