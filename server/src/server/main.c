@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <sys/wait.h>
 #include "comunication.h"
 #include "conection.h"
 #include "../structs/jugador.h"
@@ -19,37 +21,80 @@ char * revert(char * message){
   return response;
 }
 
+int n_jugadores = 0;
+Jugador* jugadores_array[4];
+int sockets_array[4];
+int server_socket;
+pthread_mutex_t lock;
+pthread_mutex_t lock2;
+
+void* common_thread (void *atr){
+  printf("id recibido: %d\n", (int)atr);
+  int id = (int) atr;
+  char *welcome = (char*)malloc(23 * sizeof(char));
+  sprintf(welcome, "Bienvenido Cliente %d!!", id);
+  server_send_message(sockets_array[id], 0, welcome);
+  free(welcome);
+  pthread_mutex_unlock(&lock);
+  int msg_code = server_receive_id(sockets_array[id]);
+  char * client_name = server_receive_payload(sockets_array[id]);
+  jugadores_array[id] = jugador_init(client_name, id);
+  // printf("%s\n", client_name);
+  printf("nombre jugador %d: %s\n", jugadores_array[id]->id, jugadores_array[id]->nombre);
+  server_send_message(sockets_array[0], 0, client_name);
+
+  pthread_mutex_lock(&lock2);
+  n_jugadores++;
+  pthread_mutex_unlock(&lock2);
+
+  pthread_exit(NULL);
+  return NULL;
+}
+
+void* creador_threads(void *atr){
+  pthread_t threads[3];
+  for (int i = 0; i < 3; i++)
+  {
+    pthread_mutex_lock(&lock);
+    int id = i+1;
+    sockets_array[i+1]= get_client(server_socket);
+    printf("id es: %d \n", id);
+    pthread_create(&threads[i], NULL, common_thread, (void*)id);
+  }
+}
+
 int main(int argc, char *argv[]){
   // Se define una IP y un puerto
   char * IP = "0.0.0.0";
   int PORT = 8080;
+  // Se prepara socket de servidor
+  server_socket = prepare_socket(IP, PORT);
+  sockets_array[0] = get_client(server_socket);
 
-  // Se crea el servidor y se obtienen los sockets de ambos clientes.
-  PlayersInfo * players_info = prepare_sockets_and_get_clients(IP, PORT);
+  pthread_t creador;
+  pthread_create(&creador, NULL, creador_threads, (void*)NULL);
 
+  char *welcome = (char*)malloc(30 * sizeof(char));
+  sprintf(welcome, "Bienvenido Cliente lider %d!!", 0);
+  server_send_message(sockets_array[0], 0, welcome);
+  free(welcome);
+  int msg_code = server_receive_id(sockets_array[0]);
+  char * client_name = server_receive_payload(sockets_array[0]);
+  jugadores_array[0] = jugador_init(client_name, 0);
+  // printf("%s\n", client_name);
+  printf("nombre jugador %d: %s\n", jugadores_array[0]->id, jugadores_array[0]->nombre);
+  sockets_array[0] = sockets_array[0];
+  n_jugadores++;
   
-
-  // Guardaremos los sockets en un arreglo e iremos alternando a quién escuchar.
-  int sockets_array[4] = {players_info->socket_c1,
-                          players_info->socket_c2,
-                          players_info->socket_c3,
-                          players_info->socket_c4};
-
-  Jugador** jugadores_array = calloc(4, sizeof(Jugador*)); // Array de jugadores
-
-  for (int i = 0; i < 4; i++)
+  while (1)
   {
-    char *welcome = (char*)malloc(23 * sizeof(char));
-    sprintf(welcome, "Bienvenido Cliente %d!!", i);
-    server_send_message(sockets_array[i], 0, welcome);
-    free(welcome);
-    int msg_code = server_receive_id(sockets_array[i]);
-    char * client_name = server_receive_payload(sockets_array[i]);
-    jugadores_array[i] = jugador_init(client_name, i);
-    // printf("%s\n", client_name);
-    printf("nombre jugador %d: %s\n", jugadores_array[i]->id, jugadores_array[i]->nombre);
+    int msg_code = server_receive_id(sockets_array[0]);
+    if (msg_code == 0)
+    {
+      break;
+    }
   }
-
+  
   char* game_begin = "inicio el juego";
   server_send_message(sockets_array[0], 1, game_begin);
   

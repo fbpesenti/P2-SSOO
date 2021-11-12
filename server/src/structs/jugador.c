@@ -55,19 +55,19 @@ void asignar_aldeano(Jugador* jug, int tipo){
     3 = ingeniero
     4 = guerrero
   */ 
-  if (tipo = 1)
+  if (tipo == 1)
   {
     jug->n_mineros++; 
   }
-  else if (tipo=2)
+  else if (tipo == 2)
   { 
     jug->n_agricultores++;  
   }
-  else if (tipo=3)
+  else if (tipo == 3)
   {
     jug->n_ingenieros++;
   }
-  else if (tipo=4)
+  else if (tipo == 4)
   {
     jug->n_guerreros ++;
   }
@@ -77,7 +77,7 @@ void asignar_aldeano(Jugador* jug, int tipo){
 }
 
 void crear_aldeano(Jugador* jug, int tipo){
-  if (tipo = 1)
+  if (tipo == 1)
   {
     if (jug->comida >=10 && jug->oro >=5)
     {
@@ -86,7 +86,7 @@ void crear_aldeano(Jugador* jug, int tipo){
       jug->oro=jug->oro-5;
     }
   }
-  else if (tipo=2)
+  else if (tipo == 2)
   {
     if (jug->comida >=10)
     {
@@ -94,7 +94,7 @@ void crear_aldeano(Jugador* jug, int tipo){
       jug->comida=jug->comida-10;
     }
   }
-  else if (tipo=3)
+  else if (tipo == 3)
   {
     if (jug->comida >=20 && jug->oro >=10)
     {
@@ -103,7 +103,7 @@ void crear_aldeano(Jugador* jug, int tipo){
       jug->oro=jug->oro-10;
     }
   }
-  else if (tipo=4)
+  else if (tipo == 4)
   {
     if (jug->comida >=10 && jug->oro >=10)
     {
@@ -450,10 +450,4 @@ void rendirse(Jugador* jug){
   jug->n_guerreros = 0;
   //Aqui hay que eliminar al jugador de los jugadores activos
 
-}
-
-int main(int argc, char const *argv[])
-{
-  printf("\n:)\n");
-  return 0;
 }

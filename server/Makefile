@@ -31,6 +31,8 @@ OPT=-g # Guardar toda la información para poder debugear. No optimiza
 # $(OPT)   = Nivel de optimización
 CFLAGS=-Wunused -Wall $(OPT)
 
+LDFLAGS= -pthread  -lpthread
+
 ###############################################################################
 # LIBRERÍAS                                                                   #
 ###############################################################################
@@ -109,14 +111,14 @@ LOCAL_DEPS = $(filter $(patsubst $(OBJ)/%, $(SRC)/%, $(dir $(1)))%, $(HDRFILES))
 ## algún .h de los directorios comunes
 ## esta mismísima Makefile
 obj/%.o: src/%.c $$(call LOCAL_DEPS,$$@) $(DEPS) Makefile
-	@$(CC) $(CFLAGS) $< -c -o $@ $(LIB) && echo "compiled '$@'"
+	@$(CC) $(CFLAGS) $(LDFLAGS) $< -c -o $@ $(LIB) && echo "compiled '$@'"
 
 # Esta regla conecta y compila cada programa a partir de los .o
 # Pero solo una vez que se haya llamado la regla anterior con lo siguiente
 ## todos los .o de la carpeta respectiva del programa
 ## todos los .o de los directorios comunes
 $(PROGRAMS): $$(filter obj/$$@/% $(foreach i, $(COMMON), obj/$(i)/%), $(OBJFILES))
-	@$(CC) $(CFLAGS) $^ -o $@ $(LIB) && echo "compiled '$@'"
+	@$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ $(LIB) && echo "compiled '$@'"
 
 ###############################################################################
 #                   Cualquier duda no temas en preguntar!                     #
