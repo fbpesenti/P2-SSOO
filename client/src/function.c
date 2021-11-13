@@ -22,7 +22,7 @@ bool principal_menu(int server_socket){
         client_send_message(server_socket, 10, "mostar info");
         //mostrar info
     } else if (c == '1'){
-        char id = menu_crear_aldeano();//cambiar a str
+        char id = menu_crear_aldeano();
         if (id == '0'){
             client_send_message(server_socket, 11, "minero");
         } else if (id == '1'){
