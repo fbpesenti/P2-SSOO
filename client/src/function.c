@@ -30,7 +30,9 @@ bool principal_menu(int server_socket){
         } else if (id == '2'){
             client_send_message(server_socket, 11, "ingeniero");
         } else if (id == '3'){
-            client_send_message(server_socket, 11, "guerrero");
+            client_send_message(server_socket, 11, "ataque");
+        } else if (id == '4'){
+            client_send_message(server_socket, 11, "defensa");
         }
         
 
@@ -44,7 +46,9 @@ bool principal_menu(int server_socket){
         } else if (id == '2'){
             client_send_message(server_socket, 13, "ingeniero");
         } else if (id == '3'){
-            client_send_message(server_socket, 13, "guerrero");
+            client_send_message(server_socket, 13, "ataque");
+        } else if (id == '4'){
+            client_send_message(server_socket, 13, "defensa");
         }
     } else if (c == '3'){
         char id = menu_atacar();
@@ -89,7 +93,8 @@ char menu_subir_nivel(){
     printf("[0] Minero\n");
     printf("[1] Agricultor\n");
     printf("[2] Ingeniero\n");
-    printf("[3] Guerrero\n");
+    printf("[3] Ataque\n");
+    printf("[4] Defensa\n");
     char x = getchar();
     getchar();
     return x;

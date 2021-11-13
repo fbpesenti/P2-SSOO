@@ -46,12 +46,13 @@ bool crear_aldeano(Jugador* jug, int tipo);
 
 
 // Subir de nivel a x cosa (agri, mineros, ingenieros, ataque, defensa)
-void subir_nivel(Jugador* jug, int tipo);
+int subir_nivel(Jugador* jug, int tipo);
 //la funcion de arriba utiliza estas sub funciones
-void subir_nivel_minero(Jugador* jug);
-void subir_nivel_agricultor(Jugador* jug);
-void subir_nivel_ingeniero(Jugador* jug);
-void subir_nivel_guerreros(Jugador* jug);
+int subir_nivel_minero(Jugador* jug);
+int subir_nivel_agricultor(Jugador* jug);
+int subir_nivel_ingeniero(Jugador* jug);
+int subir_nivel_ataque(Jugador* jug);
+int subir_nivel_defensa(Jugador* jug);
 // Atacar contrincante
 void atacar(Jugador* curr, Jugador* other);
 // Espiar

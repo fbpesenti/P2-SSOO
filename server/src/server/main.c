@@ -141,23 +141,68 @@ int main(int argc, char *argv[]){
     }else if (msg_code == 13) //El cliente me envió un mensaje a mi (servidor) para SUBIR NIVEL
     {
       printf("entre a code 13 \n");
+      printf("recursos comida %i, ciencia%i, oro %i\n", jugadores_array[my_attention]->comida, jugadores_array[my_attention]->ciencia, jugadores_array[my_attention]->oro);
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      printf("El cliente %d quiere subir niver a %s\n", my_attention+1, client_message);
       if (strcmp(client_message,"minero") == 0){
-        char * client_message = "funcion por hacer\n";
-        server_send_message(sockets_array[my_attention], 11, client_message);
+        int n = subir_nivel(jugadores_array[my_attention],1);
+        if (n == 0){
+          server_send_message(sockets_array[my_attention], 11, "se aumento el nivel minero");
+        }
+        else if (n == 1){
+          server_send_message(sockets_array[my_attention], 11, "nivel maximo, no se puede aumentar mas nivel minero");
+        }
+        else if (n== 2){
+          server_send_message(sockets_array[my_attention], 11, "recursos insuficientes para aumentar nivel minero");
+        }        
       }
       else if (strcmp(client_message,"agricultor") == 0){
-        char * client_message = "funcion por hacer\n";
-        server_send_message(sockets_array[my_attention], 11, client_message);
+        int n = subir_nivel(jugadores_array[my_attention],2);
+        if (n == 0){
+          server_send_message(sockets_array[my_attention], 11, "se aumento el nivel agricultores");
+        }
+        else if (n == 1){
+          server_send_message(sockets_array[my_attention], 11, "nivel maximo, no se puede aumentar mas nivel agricultores");
+        }
+        else if (n== 2){
+          server_send_message(sockets_array[my_attention], 11, "recursos insuficientes para aumentar nivel agricultores");
+        }
       }
       else if (strcmp(client_message,"ingeniero") == 0){
-        char * client_message = "funcion por hacer\n";
-        server_send_message(sockets_array[my_attention], 11, client_message);
+        int n = subir_nivel(jugadores_array[my_attention],3);
+        if (n == 0){
+          server_send_message(sockets_array[my_attention], 11, "se aumento el nivel ingeniero");
+        }
+        else if (n == 1){
+          server_send_message(sockets_array[my_attention], 11, "nivel maximo, no se puede aumentar mas nivel ingenieros");
+        }
+        else if (n== 2){
+          server_send_message(sockets_array[my_attention], 11, "recursos insuficientes para aumentar nivel ingenieros");
+        }
       }
-      else if (strcmp(client_message,"guerrero") == 0){
-        char * client_message = "funcion por hacer\n";
-        server_send_message(sockets_array[my_attention], 11, client_message);
+      else if (strcmp(client_message,"ataque") == 0){
+        int n = subir_nivel(jugadores_array[my_attention],4);
+        if (n == 0){
+          server_send_message(sockets_array[my_attention], 11, "se aumento el nivel ataque");
+        }
+        else if (n == 1){
+          server_send_message(sockets_array[my_attention], 11, "nivel maximo, no se puede aumentar mas nivel ataque");
+        }
+        else if (n== 2){
+          server_send_message(sockets_array[my_attention], 11, "recursos insuficientes para aumentar nivel ataque");
+        }
+      }
+      else if (strcmp(client_message,"defensa") == 0){
+        int n = subir_nivel(jugadores_array[my_attention],5);
+        if (n == 0){
+          server_send_message(sockets_array[my_attention], 11, "se aumento el nivel defensa");
+        }
+        else if (n == 1){
+          server_send_message(sockets_array[my_attention], 11, "nivel maximo, no se puede aumentar mas nivel defensa");
+        }
+        else if (n== 2){
+          server_send_message(sockets_array[my_attention], 11, "recursos insuficientes para aumentar nivel defensa");
+        }
       }
       // Le enviamos la respuesta
     }
