@@ -31,7 +31,7 @@ pthread_mutex_t lock2;
 void* common_thread (void *atr){
   printf("id recibido: %d\n", (int)atr);
   int id = (int) atr;
-  char *welcome = (char*)malloc(23 * sizeof(char));
+  char *welcome = (char*)malloc(24 * sizeof(char));
   sprintf(welcome, "Bienvenido Cliente %d!!", id);
   server_send_message(sockets_array[id], 1, welcome);
   free(welcome);
@@ -94,9 +94,22 @@ int main(int argc, char *argv[]){
   // printf("%s\n", client_name);
   printf("nombre jugador %d: %s\n", jugadores_array[0]->id, jugadores_array[0]->nombre);
   sockets_array[0] = sockets_array[0];
+  server_send_message(sockets_array[0], 4, "Elija las profecsiones de sus 9 primeros aldeanos\n");
+  for (int i = 0; i < 9; i++)
+  {
+    char* message = (char*)malloc(62 * sizeof(char));
+    sprintf(message, "Aldeano %d:\n1.-Agricultor 2.-Minero 3.-Ingeniero 4.-Guerrero\n", i);
+    server_send_message(sockets_array[0], 2, message);
+    free(message);
+    int msg_code = server_receive_id(sockets_array[0]);
+    char * type_char = server_receive_payload(sockets_array[0]);
+    int type = atoi(type_char);
+    asignar_aldeano(jugadores_array[0], type);
+  }
   pthread_mutex_lock(&lock2);
   n_jugadores++;
   pthread_mutex_unlock(&lock2);
+  server_send_message(sockets_array[0], 3, "");
   
   while (1)
   {

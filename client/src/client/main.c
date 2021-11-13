@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <pthread.h>
 #include "conection.h"
 #include "comunication.h"
 
@@ -14,6 +15,14 @@ char * get_input(){
   }
   response[pos] = '\0';
   return response;
+}
+
+void* escuchador(void *atr){
+  int server_socket = (int) atr;
+  printf("Presione enter para empezar\n");
+  char * opcion = get_input();
+  client_send_message(server_socket, 0, opcion);
+  pthread_exit(NULL);
 }
 
 
@@ -34,7 +43,7 @@ int main (int argc, char *argv[]){
     if (msg_code == 0)
     {
       char * message = client_receive_payload(server_socket);
-      printf("%s\n", message);
+      printf("ingresó jugador: %s\n", message);
     }
     
     // solicitud de nombre
@@ -55,6 +64,17 @@ int main (int argc, char *argv[]){
       printf("ingrese opción: ");
       char * opcion = get_input();
       client_send_message(server_socket, 0, opcion);
+    }
+    if (msg_code == 3) { // Atento a empezar juego
+      pthread_t point;
+      char * message = client_receive_payload(server_socket);
+      free(message);
+      pthread_create(&point, NULL, escuchador, (void*)server_socket);
+    }
+    if (msg_code == 4) { // Imprime mensaje de servidor
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
     }
   }
 
