@@ -18,8 +18,8 @@ Jugador* jugador_init(char* nombre, int id){
   // Inicializan en cero y cuando son asignados los aldeanos 
   // los niveles deben en empezar en 1 y se asignan los nueve
   // aldeanos al cada tipo
-  jug->oro = 0;
-  jug->comida = 0;
+  jug->oro = 100;
+  jug->comida = 100;
   jug->ciencia = 0;
   jug->n_mineros = 0;
   jug->n_agricultores = 0;
@@ -85,12 +85,12 @@ bool crear_aldeano(Jugador* jug, int tipo){
       jug->n_mineros++; 
       jug->comida=jug->comida-10;
       jug->oro=jug->oro-5;
+      printf("Se creo un minero\n");
       return true;
     }
     else{
       printf("recursos insuficiente\n");
       return false;
-
     }
   }
   else if (tipo=2)
@@ -99,6 +99,12 @@ bool crear_aldeano(Jugador* jug, int tipo){
     {
       jug->n_agricultores++;
       jug->comida=jug->comida-10;
+      printf("Se creo un agricultor\n");
+      return true;
+    }
+    else{
+      printf("recursos insuficiente\n");
+      return false;
     }
   }
   else if (tipo=3)
@@ -108,6 +114,12 @@ bool crear_aldeano(Jugador* jug, int tipo){
       jug->n_ingenieros++;
       jug->comida=jug->comida-20;
       jug->oro=jug->oro-10;
+      printf("Se creo un ingeniero\n");
+      return true;
+    }
+    else{
+      printf("recursos insuficiente\n");
+      return false;
     }
   }
   else if (tipo=4)
@@ -117,6 +129,12 @@ bool crear_aldeano(Jugador* jug, int tipo){
       jug->n_guerreros ++;
       jug->comida=jug->comida-10;
       jug->oro=jug->oro-10;
+      printf("Se creo un guerrero\n");
+      return true;
+    }
+    else{
+      printf("recursos insuficiente\n");
+      return false;
     }
   }
 }

@@ -89,17 +89,13 @@ int main(int argc, char *argv[]){
       printf("entre a code 10 \n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
-      // Le enviamos la respuesta
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     }
-
     else if (msg_code == 11) //El cliente me envió un mensaje a mi (servidor) para CREAR ALDEANO
     {
       printf("entre a code 11\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      printf("El cliente %d creara un %s\n", my_attention+1, client_message);
       if (strcmp(client_message,"minero") == 0){
-        printf("jugador %i\n", jugadores_array[my_attention+1]->id);
         bool answer = crear_aldeano(jugadores_array[my_attention], 1);
         if (answer){
           char * client_message = "Minero creado\n";
@@ -110,8 +106,7 @@ int main(int argc, char *argv[]){
           server_send_message(sockets_array[my_attention], 11, client_message);
         }
       } else if (strcmp(client_message,"agricultor") == 0){
-        printf("jugador %i\n", jugadores_array[my_attention+1]->id);
-        bool answer = crear_aldeano(jugadores_array[my_attention], 1);
+        bool answer = crear_aldeano(jugadores_array[my_attention], 2);
         if (answer){
           char * client_message = "Agricultor creado\n";
           server_send_message(sockets_array[my_attention], 11, client_message);
@@ -121,8 +116,7 @@ int main(int argc, char *argv[]){
           server_send_message(sockets_array[my_attention], 11, client_message);
         }
       } else if (strcmp(client_message,"ingeniero") == 0){
-        printf("jugador %i\n", jugadores_array[my_attention+1]->id);
-        bool answer = crear_aldeano(jugadores_array[my_attention], 1);
+        bool answer = crear_aldeano(jugadores_array[my_attention], 3);
         if (answer){
           char * client_message = "Ingeniero creado\n";
           server_send_message(sockets_array[my_attention], 11, client_message);
@@ -133,7 +127,7 @@ int main(int argc, char *argv[]){
         }
       } else if (strcmp(client_message,"guerrero") == 0){
         printf("jugador %i\n", jugadores_array[my_attention+1]->id);
-        bool answer = crear_aldeano(jugadores_array[my_attention], 1);
+        bool answer = crear_aldeano(jugadores_array[my_attention], 4);
         if (answer){
           char * client_message = "Guerrero creado\n";
           server_send_message(sockets_array[my_attention], 11, client_message);
@@ -142,14 +136,8 @@ int main(int argc, char *argv[]){
           char * client_message = "recursos insuficientes\n";
           server_send_message(sockets_array[my_attention], 11, client_message);
         }
-      }
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
+      }      
 
-      // Le enviaremos el mismo mensaje invertido jeje
-      char * response = revert(client_message);
-
-      // Le enviamos la respuesta
-      server_send_message(sockets_array[my_attention], 1, response);
     }else if (msg_code == 13) //El cliente me envió un mensaje a mi (servidor) para SUBIR NIVEL
     {
       printf("entre a code 13 \n");
@@ -172,7 +160,6 @@ int main(int argc, char *argv[]){
         server_send_message(sockets_array[my_attention], 11, client_message);
       }
       // Le enviamos la respuesta
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     }
     if (msg_code == 14) //El cliente me envió un mensaje a mi (servidor) ATACAR
     {
@@ -182,7 +169,6 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     }
     if (msg_code == 15) //El cliente me envió un mensaje a mi (servidor) ESPIAR
     {
@@ -192,7 +178,6 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     } if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
     {
       printf("entre a code 16\n");
@@ -201,7 +186,6 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     } if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
     {
       printf("entre a code 17\n");
@@ -210,7 +194,6 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     } if (msg_code == 18) //El cliente me envió un mensaje a mi (servidor) rendirse
     {
       printf("entre a code 18\n");
@@ -219,9 +202,9 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-      server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
     }
     printf("------------------\n");
+    server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
   }
   return 0;
 }
