@@ -81,6 +81,13 @@ int main (int argc, char *argv[]){
       printf("%s\n", message);
       free(message);
     }
+    if (msg_code == 10){
+      printf("entre a code 10\n");
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+
+    }
     //printf("------------------\n");
     
   }

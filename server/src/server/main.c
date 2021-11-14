@@ -89,6 +89,22 @@ int main(int argc, char *argv[]){
       printf("entre a code 10 \n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      int comida = jugadores_array[my_attention]->comida;
+      int oro = jugadores_array[my_attention]->oro;
+      int ciencia = jugadores_array[my_attention]->ciencia;
+      int n_agricultores = jugadores_array[my_attention]->n_agricultores;
+      int nivel_agricultores = jugadores_array[my_attention]->nivel_agricultores;
+      int n_mineros = jugadores_array[my_attention]->n_mineros;
+      int nivel_minero = jugadores_array[my_attention]->nivel_minero;
+      int n_guerreros = jugadores_array[my_attention]->n_guerreros;
+      int nivel_guerreros = jugadores_array[my_attention]->nivel_guerreros;
+      int n_ingenieros = jugadores_array[my_attention]->n_ingenieros;
+      int nivel_ingenieros = jugadores_array[my_attention]->nivel_ingenieros;
+      char* server_message;
+      //sprintf(server_message, "INFORMACION\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
+      sprintf(server_message, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
+      server_send_message(sockets_array[my_attention], 10, server_message);
+  
     }
     else if (msg_code == 11) //El cliente me envió un mensaje a mi (servidor) para CREAR ALDEANO
     {
