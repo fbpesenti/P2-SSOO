@@ -58,7 +58,6 @@ void* common_thread (void *atr){
   pthread_mutex_unlock(&lock2);
 
   pthread_exit(NULL);
-  return NULL;
 }
 
 void* creador_threads(void *atr){
@@ -117,6 +116,10 @@ int main(int argc, char *argv[]){
     int msg_code = server_receive_id(sockets_array[0]);
     if (msg_code == 0)
     {
+      for (int i = 0; i < n_jugadores; i++)
+      {
+        server_send_message(sockets_array[i], 5, "Comienza el juego");
+      }
       break;
     }
   }
@@ -148,7 +151,7 @@ int main(int argc, char *argv[]){
       printf("Servidor traspasando desde %d a %d el mensaje: %s\n", my_attention+1, ((my_attention+1)%4)+1, client_message);
 
       // Mi atención cambia al otro socket
-      my_attention = (my_attention + 1) % 4;
+      my_attention = (my_attention + 1) % n_jugadores;
       server_send_message(sockets_array[my_attention], 2, client_message);
     }else if (msg_code == 10) //El cliente me envió un mensaje a mi (servidor) para MOSTRAR INFO
     {

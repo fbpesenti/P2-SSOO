@@ -78,6 +78,12 @@ int main (int argc, char *argv[]){
       printf("%s\n", message);
       free(message);
     }
+    if (msg_code == 5) { // comienzo de juego
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+      intro = 0;
+    }
   }
 
   // Se inicializa un loop para recibir todo tipo de paquetes y tomar una acción al respecto
