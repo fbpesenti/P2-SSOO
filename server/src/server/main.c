@@ -223,7 +223,8 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-    } if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
+    } 
+    if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
     {
       printf("entre a code 16\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
@@ -231,20 +232,25 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
-    } if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
+    } 
+    if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
     {
       printf("entre a code 17\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
       // Le enviamos la respuesta
-      char * response = "funcion por hacer";
-      server_send_message(sockets_array[my_attention], 11, response);
-    } if (msg_code == 18) //El cliente me envió un mensaje a mi (servidor) rendirse
+      char * response = "Jugador paso turno";
+
+      server_send_message(sockets_array[my_attention+1], 11, response);
+
+    } 
+    if (msg_code == 18) //El cliente me envió un mensaje a mi (servidor) rendirse
     {
       printf("entre a code 18\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
       // Le enviamos la respuesta
+      // bool answer = crear_aldeano(jugadores_array[my_attention], 1);
       char * response = "funcion por hacer";
       server_send_message(sockets_array[my_attention], 11, response);
     }

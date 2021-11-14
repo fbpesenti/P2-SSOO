@@ -347,11 +347,12 @@ void robar(Jugador* curr, Jugador* other, int recurso_robar){
 
 //Aqui se deberia pasar al siguiente turno pero aun no se como hacerlo
 //Yo creo que se deberia manejar en flujo principal
-void pasar(Jugador* jug){
+int pasar(Jugador* jug){
   printf("Se ha termiando el turno actual\n");
+  return 0;
 }
 
-void rendirse(Jugador* jug){
+int rendirse(Jugador* jug){
   printf("Jugador con id %i se ha rendido\n", jug->id);
   jug->oro = 0;
   jug->comida = 0;
@@ -361,7 +362,7 @@ void rendirse(Jugador* jug){
   jug->n_ingenieros = 0;
   jug->n_guerreros = 0;
   //Aqui hay que eliminar al jugador de los jugadores activos
-
+  return 0;
 }
 
 //int main(int argc, char const *argv[])
