@@ -304,17 +304,28 @@ void atacar(Jugador* curr, Jugador* other){
 
 }
 //-----------curr espia a other---------------
-void espiar(Jugador* curr, Jugador* other){
+char* espiar(Jugador* curr, Jugador* other){
+  
   if (curr->oro>=30){
+    printf("entro funcion espiar\n");
     curr->oro -= 30;
-    printf("Espiando....\n");
-    printf("cantidad guerreros: %i", other->n_guerreros);
-    printf("nivel defenza: %i", other->nivel_defensa);
-    printf("nivel ataque: %i", other->nivel_ataque);
+    char* mensaje;
+    //char* mensaje;
+    sprintf(mensaje, "Espiando a %s\nCantidad guerreros oponente: %i\nNivel defensa oponente: %i\nNivel ataque oponente: %i\n", other->nombre, other->n_guerreros, other->nivel_defensa, other->nivel_ataque);
+    //printf("Espiando....\n");
+    //printf("cantidad guerreros: %i", other->n_guerreros);
+    //printf("nivel defenza: %i", other->nivel_defensa);
+    //printf("nivel ataque: %i", other->nivel_ataque);
+    return mensaje;
 
   } else{
-    printf("No hay suficientes recursos\n");
+    char* mensaje_else;
+    //char* mensaje_else;
+    sprintf(mensaje_else,"No hay suficientes recursos\n");
+    return mensaje_else;
   }
+  
+
 
 }
 //--------------------------

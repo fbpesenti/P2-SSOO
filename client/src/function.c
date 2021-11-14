@@ -56,7 +56,8 @@ bool principal_menu(int server_socket){
         //printf("id %c\n", id);
     } else if (c == '4'){
         char id = menu_espiar();
-        client_send_message(server_socket, 15, "espiar");
+        printf("el id es %s\n", id);
+        client_send_message(server_socket, 15, id);
     } else if (c == '5'){
         char* id = menu_robar();
         client_send_message(server_socket, 16, "robar");
@@ -113,7 +114,6 @@ char menu_atacar(){
 char menu_espiar(){
     printf("Menu Espiar\n");
     printf("Escoger jugador a espiar...\n");
-    printf("[0] \n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
     char x = getchar();
     getchar();

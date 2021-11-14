@@ -1,4 +1,4 @@
-
+#include "comunication.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h> 

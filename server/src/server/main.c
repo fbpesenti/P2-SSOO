@@ -237,9 +237,17 @@ int main(int argc, char *argv[]){
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
       // Le enviamos la respuesta
-      char * response = "funcion por hacer";
-      server_send_message(sockets_array[my_attention], 11, response);
-    } if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
+      //client_message = atoi(client_message);
+      printf("id a espiar string %s\n", client_message);
+      int client_message_int = atoi(client_message);
+      printf("id a espiar %i\n", client_message_int);
+      char * response = espiar(jugadores_array[my_attention], jugadores_array[client_message_int]);
+      printf("entro response\n");
+      printf("response de espiar%s\n", response);
+      //char * response = "funcion por hacer";
+      server_send_message(sockets_array[my_attention], 15, response);
+    } 
+    if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
     {
       printf("entre a code 16\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
