@@ -279,14 +279,12 @@ int main(int argc, char *argv[]){
         sockets_array[4]=NULL;
         jugadores_array[4]=NULL;
       }
-      
       // Mi atención cambia al otro socket
       numero_jug=numero_jug-1;
-      if(numero_jug==0){
+      if(numero_jug==1){
       // Proceder a terminar el juego
       }
       my_attention = (my_attention + 1) % numero_jug;
-
     }
     printf("------------------\n");
     server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
