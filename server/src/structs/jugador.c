@@ -137,13 +137,11 @@ bool crear_aldeano(Jugador* jug, int tipo){
       return false;
     }
   }
+  return false;
 }
 
 
-
-
 //CUALQUIER DUDA DE ESTAS ME PREGUNTAN (Pachi)
-
 // -----mostrar info -------------------------
 
 void mostrar_informacion(Jugador* jug){
@@ -279,6 +277,7 @@ int subir_nivel(Jugador* jug, int tipo){
     int n = subir_nivel_defensa(jug);
     return n;
   }
+  return 0;
 }
 //---------curr ataca a other ---------
 void atacar(Jugador* curr, Jugador* other){
@@ -362,7 +361,9 @@ int rendirse(Jugador* jug){
   jug->n_ingenieros = 0;
   jug->n_guerreros = 0;
   //Aqui hay que eliminar al jugador de los jugadores activos
-  return 0;
+  int id = jug->id;
+  free(jug);
+  return id;
 }
 
 //int main(int argc, char const *argv[])

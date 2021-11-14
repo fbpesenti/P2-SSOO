@@ -5,6 +5,7 @@
 #include "conection.h"
 #include "../structs/jugador.h"
 
+int numero_jug = 0;
 char * revert(char * message){
   //Se invierte el mensaje
   
@@ -28,11 +29,6 @@ int main(int argc, char *argv[]){
   // Se crea el servidor y se obtienen los sockets de ambos clientes.
   PlayersInfo * players_info = prepare_sockets_and_get_clients(IP, PORT);
 
-  
-
-
-  
-
   // Guardaremos los sockets en un arreglo e iremos alternando a quién escuchar.
   int sockets_array[4] = {players_info->socket_c1,
                           players_info->socket_c2,
@@ -43,7 +39,7 @@ int main(int argc, char *argv[]){
 
   for (int i = 0; i < 4; i++)
   {
-
+    numero_jug++;
     char *welcome = (char*)malloc(23 * sizeof(char));
     sprintf(welcome, "Bienvenido Cliente %d!!", i);
     server_send_message(sockets_array[i], 0, welcome);
@@ -82,7 +78,7 @@ int main(int argc, char *argv[]){
       printf("Servidor traspasando desde %d a %d el mensaje: %s\n", my_attention+1, ((my_attention+1)%4)+1, client_message);
 
       // Mi atención cambia al otro socket
-      my_attention = (my_attention + 1) % 4;
+      my_attention = (my_attention + 1) % numero_jug;
       server_send_message(sockets_array[my_attention], 2, client_message);
     }else if (msg_code == 10) //El cliente me envió un mensaje a mi (servidor) para MOSTRAR INFO
     {
@@ -240,19 +236,57 @@ int main(int argc, char *argv[]){
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
       // Le enviamos la respuesta
       char * response = "Jugador paso turno";
-
-      server_send_message(sockets_array[my_attention+1], 11, response);
-
+      server_send_message(sockets_array[my_attention], 11, response);
+      // Mi atención cambia al otro socket
+      my_attention = (my_attention + 1) % numero_jug;
     } 
     if (msg_code == 18) //El cliente me envió un mensaje a mi (servidor) rendirse
     {
       printf("entre a code 18\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      printf("El cliente %d dice: %s\n", my_attention, client_message);
       // Le enviamos la respuesta
-      // bool answer = crear_aldeano(jugadores_array[my_attention], 1);
-      char * response = "funcion por hacer";
+      int temp = rendirse(jugadores_array[my_attention]);
+      char * response = "Jugador se rindio";
       server_send_message(sockets_array[my_attention], 11, response);
+      if(my_attention==4){
+        sockets_array[my_attention]=NULL;
+        jugadores_array[my_attention]=NULL;
+      }
+      else if(my_attention==3)
+      {
+        sockets_array[my_attention]=sockets_array[4];
+        jugadores_array[my_attention]=jugadores_array[4];
+        sockets_array[4]=NULL;
+        jugadores_array[4]=NULL;
+      }
+      else if(my_attention==2)
+      {
+        sockets_array[my_attention]=sockets_array[3];
+        jugadores_array[my_attention]=jugadores_array[3];
+        sockets_array[3]=sockets_array[4];
+        jugadores_array[3]=jugadores_array[4];
+        sockets_array[4]=NULL;
+        jugadores_array[4]=NULL;
+      }
+      else if(my_attention==1){
+        sockets_array[my_attention]=sockets_array[2];
+        jugadores_array[my_attention]=jugadores_array[2];
+        sockets_array[2]=sockets_array[3];
+        jugadores_array[2]=jugadores_array[3];
+        sockets_array[3]=sockets_array[4];
+        jugadores_array[3]=jugadores_array[4];
+        sockets_array[4]=NULL;
+        jugadores_array[4]=NULL;
+      }
+      
+      // Mi atención cambia al otro socket
+      numero_jug=numero_jug-1;
+      if(numero_jug==0){
+      // Proceder a terminar el juego
+      }
+      my_attention = (my_attention + 1) % numero_jug;
+
     }
     printf("------------------\n");
     server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
