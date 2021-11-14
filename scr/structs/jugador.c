@@ -450,8 +450,8 @@ void rendirse(Jugador* jug){
 
 }
 
-int main(int argc, char const *argv[])
-{
-  printf("\n:)\n");
-  return 0;
-}
+//int main(int argc, char const *argv[])
+//{
+  //printf("\n:)\n");
+  //return 0;
+//}
