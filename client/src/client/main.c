@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <pthread.h>
 #include <stdbool.h> 
 #include "conection.h"
 #include "comunication.h"
@@ -18,6 +19,14 @@ char * get_input(){
   return response;
 }
 
+void* escuchador(void *atr){
+  int server_socket = (int) atr;
+  printf("Presione enter para empezar\n");
+  char * opcion = get_input();
+  client_send_message(server_socket, 0, opcion);
+  pthread_exit(NULL);
+}
+
 
 int main (int argc, char *argv[]){
   //Se obtiene la ip y el puerto donde está escuchando el servidor (la ip y puerto de este cliente da igual)
@@ -27,20 +36,60 @@ int main (int argc, char *argv[]){
   // Se prepara el socket
   int server_socket = prepare_socket(IP, PORT);
 
-  // Se inicializa un loop para recibir todo tipo de paquetes y tomar una acción al respecto
-  while (1){
+  int intro = 1;
+
+  while(intro){
     int msg_code = client_receive_id(server_socket);
+
+    //aviso a lider de nueva conexion
+    if (msg_code == 0)
+    {
+      char * message = client_receive_payload(server_socket);
+      printf("ingresó jugador: %s\n", message);
+    }
     
-    if (msg_code == 0) { //Recibimos un mensaje del servidor
+    // solicitud de nombre
+    if (msg_code == 1) { //Recibimos un mensaje del servidor
       char * message = client_receive_payload(server_socket);
       printf("%s\n", message);
       free(message);
 
       printf("ingrese su nombre a continuacion: ");
       char * name = get_input();
-
       client_send_message(server_socket, 0, name);
     }
+    if (msg_code == 2) { //Recibimos soliitud de ingresar aldeano
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+
+      printf("ingrese opción: ");
+      char * opcion = get_input();
+      client_send_message(server_socket, 0, opcion);
+    }
+    if (msg_code == 3) { // Atento a empezar juego
+      pthread_t point;
+      char * message = client_receive_payload(server_socket);
+      free(message);
+      pthread_create(&point, NULL, escuchador, (void*)server_socket);
+    }
+    if (msg_code == 4) { // Imprime mensaje de servidor
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+    }
+    if (msg_code == 5) { // comienzo de juego
+      char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
+      free(message);
+      intro = 0;
+    }
+  }
+
+  // Se inicializa un loop para recibir todo tipo de paquetes y tomar una acción al respecto
+  while (1){
+    int msg_code = client_receive_id(server_socket);
+    
     
     if (msg_code == 1) { //Recibimos un mensaje del servidor
       printf("entre a code 1\n");
