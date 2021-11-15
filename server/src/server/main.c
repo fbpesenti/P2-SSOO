@@ -293,9 +293,9 @@ int main(int argc, char *argv[]){
     {
       printf("entre a code 14\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      printf("El cliente %d dice: atacar a jugador con id %s\n", my_attention+1, client_message);
       int client_message_int = atoi(client_message);
-      printf("el jugador a atacar es el con id: %i\n");
+      //printf("el jugador a atacar es el con id: %i\n");
       if (jugadores_array[client_message_int]->eliminado==false){
         int response = atacar(jugadores_array[my_attention], jugadores_array[client_message_int]);
         if (response==1){
