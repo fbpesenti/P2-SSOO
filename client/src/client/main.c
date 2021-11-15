@@ -96,6 +96,7 @@ int main (int argc, char *argv[]){
       char * message = client_receive_payload(server_socket);
       printf("El servidor dice: %s\n", message);
       free(message);
+      // client_send_message(server_socket, 19, "1");
       bool turno = true;
       turno = principal_menu(server_socket);
       
@@ -107,7 +108,14 @@ int main (int argc, char *argv[]){
       //char * response = get_input();
       //client_send_message(server_socket, option, response);
     }
-
+    if (msg_code == 17) {
+      printf("entre a code 17\n");
+      char * message = client_receive_payload(server_socket);
+      printf("El servidor dice: %s\n", message);
+      free(message);
+      // bool turno = true;
+      // turno = principal_menu(server_socket);
+    }
     if (msg_code == 2){ //Recibimos un mensaje que proviene del otro cliente
     printf("entre a code 2\n");
       char * message = client_receive_payload(server_socket);
@@ -149,7 +157,12 @@ int main (int argc, char *argv[]){
       char * message = client_receive_payload(server_socket);
       printf("\n%s\n", message);
       free(message);
-
+    }
+    if (msg_code == 19){
+      //printf("entre a code 15\n");
+      char * message = client_receive_payload(server_socket);
+      printf("\n%s\n", message);
+      free(message);
     }
     //printf("------------------\n");
     
