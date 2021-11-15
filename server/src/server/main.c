@@ -115,6 +115,8 @@ int main(int argc, char *argv[]){
   while (1)
   {
     int msg_code = server_receive_id(sockets_array[0]);
+    char * client_message = server_receive_payload(sockets_array[0]);
+    free(client_message);
     if (msg_code == 0)
     {
       for (int i = 0; i < n_jugadores; i++)
@@ -136,15 +138,10 @@ int main(int argc, char *argv[]){
 
     if (msg_code == 1) //El cliente me envió un mensaje a mi (servidor)
     {
-      printf("entre a code 1\n");
+      //printf("entre a code 1\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      free(client_message);
 
-      // Le enviaremos el mismo mensaje invertido jeje
-      char * response = revert(client_message);
-
-      // Le enviamos la respuesta
-      server_send_message(sockets_array[my_attention], 1, response);
     }
     else if (msg_code == 2){ //El cliente le envía un mensaje al otro cliente
       printf("entre a code 2\n");
@@ -159,6 +156,22 @@ int main(int argc, char *argv[]){
       printf("entre a code 10 \n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      int comida = jugadores_array[my_attention]->comida;
+      int oro = jugadores_array[my_attention]->oro;
+      int ciencia = jugadores_array[my_attention]->ciencia;
+      int n_agricultores = jugadores_array[my_attention]->n_agricultores;
+      int nivel_agricultores = jugadores_array[my_attention]->nivel_agricultores;
+      int n_mineros = jugadores_array[my_attention]->n_mineros;
+      int nivel_minero = jugadores_array[my_attention]->nivel_minero;
+      int n_guerreros = jugadores_array[my_attention]->n_guerreros;
+      int nivel_guerreros = jugadores_array[my_attention]->nivel_guerreros;
+      int n_ingenieros = jugadores_array[my_attention]->n_ingenieros;
+      int nivel_ingenieros = jugadores_array[my_attention]->nivel_ingenieros;
+      char* server_message = calloc(2000,sizeof(char));
+      sprintf(server_message, "MOSTRANDO INFORMACION\n\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
+      //sprintf(server_message, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
+      server_send_message(sockets_array[my_attention], 10, server_message);
+  
     }
     else if (msg_code == 11) //El cliente me envió un mensaje a mi (servidor) para CREAR ALDEANO
     {
@@ -289,21 +302,27 @@ int main(int argc, char *argv[]){
     {
       printf("entre a code 15\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
-      // Le enviamos la respuesta
-      char * response = "funcion por hacer";
-      server_send_message(sockets_array[my_attention], 11, response);
+      printf("El cliente %d dice: espiar a jugador con id %s\n", my_attention+1, client_message);
+      int client_message_int = atoi(client_message);
+      char * response = espiar(jugadores_array[my_attention], jugadores_array[client_message_int]);
+      free(client_message);
+      server_send_message(sockets_array[my_attention], 15, response);
     } 
     if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
     {
       printf("entre a code 16\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
-      // Le enviamos la respuesta
-      char * response = "funcion por hacer";
-      server_send_message(sockets_array[my_attention], 11, response);
-    } 
-    if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
+      char* id_robar = calloc(1, sizeof(char));
+      id_robar[0]=client_message[0];
+      char* recurso_robar = calloc(1, sizeof(char));
+      recurso_robar[0] = client_message[1];
+      int id_robar_int = atoi(id_robar);
+      int recurso_robar_int = atoi(recurso_robar);
+      char * response = robar(jugadores_array[my_attention], jugadores_array[id_robar_int], recurso_robar_int);
+      free(client_message);
+      server_send_message(sockets_array[my_attention], 16, response);
+    } if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
     {
       printf("entre a code 17\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
@@ -321,7 +340,7 @@ int main(int argc, char *argv[]){
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention, client_message);
       // Le enviamos la respuesta
-      int temp = rendirse(jugadores_array[my_attention]);
+      rendirse(jugadores_array[my_attention]);
       char * response = "Jugador se rindio";
       server_send_message(sockets_array[my_attention], 11, response);
       if(my_attention==4){

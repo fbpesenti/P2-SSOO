@@ -44,8 +44,6 @@ void recolectar_recursos(Jugador* jug){
   jug->oro = jug->oro+new_oro;
   jug->comida = jug->comida+new_comida;
   jug->ciencia = jug->ciencia+new_ciencia;
-
-  /*No se si imprimir aqui o hacemos una funcion que imprime despues*/ 
 }
 
 void asignar_aldeano(Jugador* jug, int tipo){
@@ -59,15 +57,15 @@ void asignar_aldeano(Jugador* jug, int tipo){
   {
     jug->n_mineros++; 
   }
-  else if (tipo == 2)
+  else if (tipo ==2)
   { 
     jug->n_agricultores++;  
   }
-  else if (tipo == 3)
+  else if (tipo ==3)
   {
     jug->n_ingenieros++;
   }
-  else if (tipo == 4)
+  else if (tipo ==4)
   {
     jug->n_guerreros ++;
   }
@@ -137,11 +135,13 @@ bool crear_aldeano(Jugador* jug, int tipo){
       return false;
     }
   }
-  return false;
 }
 
 
+
+
 //CUALQUIER DUDA DE ESTAS ME PREGUNTAN (Pachi)
+
 // -----mostrar info -------------------------
 
 void mostrar_informacion(Jugador* jug){
@@ -277,7 +277,6 @@ int subir_nivel(Jugador* jug, int tipo){
     int n = subir_nivel_defensa(jug);
     return n;
   }
-  return 0;
 }
 //---------curr ataca a other ---------
 void atacar(Jugador* curr, Jugador* other){
@@ -303,17 +302,27 @@ void atacar(Jugador* curr, Jugador* other){
 
 }
 //-----------curr espia a other---------------
-void espiar(Jugador* curr, Jugador* other){
+char* espiar(Jugador* curr, Jugador* other){
+  
   if (curr->oro>=30){
     curr->oro -= 30;
-    printf("Espiando....\n");
-    printf("cantidad guerreros: %i", other->n_guerreros);
-    printf("nivel defenza: %i", other->nivel_defensa);
-    printf("nivel ataque: %i", other->nivel_ataque);
+    char* mensaje = calloc(2000,sizeof(char));
+    sprintf(mensaje, "ESPIANDO A %s\n- Cantidad guerreros: %i\n- Nivel defenza: %i\n- Nivel ataque: %i\n",other->nombre, other->n_guerreros, other->nivel_defensa, other->nivel_ataque);
+    //printf("entro funcion espiar4 y el nombre es %s\n", other->nombre);
+    //printf("Espiando....\n");
+    //printf("cantidad guerreros: %i", other->n_guerreros);
+    //printf("nivel defenza: %i", other->nivel_defensa);
+    //printf("nivel ataque: %i", other->nivel_ataque);
+    return mensaje;
 
   } else{
-    printf("No hay suficientes recursos\n");
+    char* mensaje_else = calloc(500,sizeof(char));
+    //char* mensaje_else;
+    sprintf(mensaje_else,"No hay suficientes recursos\n");
+    return mensaje_else;
   }
+  
+
 
 }
 //--------------------------
@@ -321,37 +330,40 @@ void espiar(Jugador* curr, Jugador* other){
 //---------curr roba a other -------------------
 //recurso_robar es un int que representa si eligio robar comida o oro
 //recurso_robar=0 es comida y recurso_robar=1 es oro
-void robar(Jugador* curr, Jugador* other, int recurso_robar){
+char* robar(Jugador* curr, Jugador* other, int recurso_robar){
   if (curr->ciencia>=10){
     curr->ciencia-=10;
-    printf("Robando recursos.....\n");
     if (recurso_robar==0){
       int comida_robada = (other->comida)*(0.1);
-
       other->comida-=comida_robada;
       curr->comida+=comida_robada;
-      printf("El jugador con id %i le ha robado %i de comida a el jugador con id %i\n", curr->id, comida_robada, other->id);
+      char* mensaje = calloc(2000, sizeof(char));
+      sprintf(mensaje, "ROBO EXITOSO\nLe haz robado %i de comida al jugador con id %i\n", comida_robada, other->id);
+      return mensaje;
     }
     if (recurso_robar==1){
       int oro_robado = (other->oro)*(0.1);
       other->oro-=oro_robado;
       curr->oro+=oro_robado;
-      printf("El jugador con id %i le ha robado %i de oro a el jugador con id %i\n", curr->id, oro_robado, other->id);
+      char* mensaje_segundo_if =calloc(2000, sizeof(char));
+      sprintf(mensaje_segundo_if,"ROBO EXITOSO\nLe haz robado %i de oro al jugador con id %i\n", oro_robado, other->id);
+      return mensaje_segundo_if;
     }
   }
   else {
-    printf("No hay sufiecientes recursos para realizar esta accion\n");
+    char* mensaje_else = calloc(500, sizeof(char));
+    sprintf(mensaje_else,"ERROR: No tienes sufiecientes recursos para realizar esta accion\n");
+    return mensaje_else;
   }
 }
 
 //Aqui se deberia pasar al siguiente turno pero aun no se como hacerlo
 //Yo creo que se deberia manejar en flujo principal
-int pasar(Jugador* jug){
+void pasar(Jugador* jug){
   printf("Se ha termiando el turno actual\n");
-  return 0;
 }
 
-int rendirse(Jugador* jug){
+void rendirse(Jugador* jug){
   printf("Jugador con id %i se ha rendido\n", jug->id);
   jug->oro = 0;
   jug->comida = 0;
@@ -361,9 +373,7 @@ int rendirse(Jugador* jug){
   jug->n_ingenieros = 0;
   jug->n_guerreros = 0;
   //Aqui hay que eliminar al jugador de los jugadores activos
-  int id = jug->id;
-  free(jug);
-  return id;
+
 }
 
 //int main(int argc, char const *argv[])

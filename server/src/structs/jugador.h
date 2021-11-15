@@ -56,13 +56,15 @@ int subir_nivel_defensa(Jugador* jug);
 // Atacar contrincante
 void atacar(Jugador* curr, Jugador* other);
 // Espiar
-void espiar(Jugador* curr, Jugador* other);
+char * espiar(Jugador* curr, Jugador* other);
 // Robar
-void robar(Jugador* curr, Jugador* other, int recurso_robar);
+char * robar(Jugador* curr, Jugador* other, int recurso_robar);
 // Pasar
-int pasar(Jugador* jug);
+void pasar(Jugador* jug);
 // Rendirse
-int rendirse(Jugador* jug);
+void rendirse(Jugador* jug);
+
+void mostrar_informacion(Jugador* jug);
 
 void mostrar_informacion(Jugador* jug);
 
