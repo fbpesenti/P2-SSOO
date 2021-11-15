@@ -78,10 +78,27 @@ void* creador_threads(void *atr){
 }
 
 int main(int argc, char *argv[]){
+  int PORT;
+  char* IP;
+  if (argc =! 4)
+  {
+    printf("No se pasaron suficientes argumentos");
+    exit(1);
+  }else
+  {
+    for (int i = 1; i < 5; i = i+2)
+    {
+      if (strcmp(argv[i], "-p") == 0)
+      {
+        PORT = atoi(argv[i+1]);
+      }else if (strcmp(argv[i], "-i") == 0)
+      {
+        IP = argv[i+1];
+      } 
+    }    
+  }
   printf("se inicializa el servidor\n");
-  // Se define una IP y un puerto
-  char * IP = "0.0.0.0";
-  int PORT = 8080;
+  
   // Se prepara socket de servidor
   server_socket = prepare_socket(IP, PORT);
   sockets_array[0] = get_client(server_socket);
@@ -104,7 +121,7 @@ int main(int argc, char *argv[]){
   server_send_message(sockets_array[0], 4, "Elija las profecsiones de sus 9 primeros aldeanos\n");
   for (int i = 0; i < 9; i++)
   {
-    char* message = (char*)malloc(62 * sizeof(char));
+    char* message = (char*)malloc(66 * sizeof(char));
     sprintf(message, "Aldeano %d:\n[1] Agricultor\n[2] Minero\n[3] Ingeniero\n[4] Guerrero\n", i);
     server_send_message(sockets_array[0], 2, message);
     free(message);
