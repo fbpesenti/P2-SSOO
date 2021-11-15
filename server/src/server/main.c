@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
   for (int i = 0; i < 4; i++)
   {
 
-    char *welcome = (char*)malloc(23 * sizeof(char));
+    char * welcome = calloc(23, sizeof(char));
     sprintf(welcome, "Bienvenido Cliente %d!!", i);
     server_send_message(sockets_array[i], 0, welcome);
     free(welcome);
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
 
     if (msg_code == 1) //El cliente me envió un mensaje a mi (servidor)
     {
-      printf("entre a code 1\n");
+      //printf("entre a code 1\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]){
       int n_ingenieros = jugadores_array[my_attention]->n_ingenieros;
       int nivel_ingenieros = jugadores_array[my_attention]->nivel_ingenieros;
       char* server_message = calloc(2000,sizeof(char));
-      sprintf(server_message, "INFORMACION\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
+      sprintf(server_message, "MOSTRANDO INFORMACION\n\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
       //sprintf(server_message, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
       server_send_message(sockets_array[my_attention], 10, server_message);
   
@@ -253,9 +253,9 @@ int main(int argc, char *argv[]){
       int id_robar_int = atoi(id_robar);
       int recurso_robar_int = atoi(recurso_robar);
       char * response = robar(jugadores_array[my_attention], jugadores_array[id_robar_int], recurso_robar_int);
+      free(client_message);
       server_send_message(sockets_array[my_attention], 16, response);
-    }
-    if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
+    } if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
     {
       printf("entre a code 17\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);

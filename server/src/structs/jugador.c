@@ -44,8 +44,6 @@ void recolectar_recursos(Jugador* jug){
   jug->oro = jug->oro+new_oro;
   jug->comida = jug->comida+new_comida;
   jug->ciencia = jug->ciencia+new_ciencia;
-
-  /*No se si imprimir aqui o hacemos una funcion que imprime despues*/ 
 }
 
 void asignar_aldeano(Jugador* jug, int tipo){
@@ -309,7 +307,7 @@ char* espiar(Jugador* curr, Jugador* other){
   if (curr->oro>=30){
     curr->oro -= 30;
     char* mensaje = calloc(2000,sizeof(char));
-    sprintf(mensaje, "ESPIANDO A %s\n-Cantidad guerreros: %i\n-Nivel defenza: %i\n-Nivel ataque: %i\n",other->nombre, other->n_guerreros, other->nivel_defensa, other->nivel_ataque);
+    sprintf(mensaje, "ESPIANDO A %s\n- Cantidad guerreros: %i\n- Nivel defenza: %i\n- Nivel ataque: %i\n",other->nombre, other->n_guerreros, other->nivel_defensa, other->nivel_ataque);
     //printf("entro funcion espiar4 y el nombre es %s\n", other->nombre);
     //printf("Espiando....\n");
     //printf("cantidad guerreros: %i", other->n_guerreros);
@@ -335,27 +333,26 @@ char* espiar(Jugador* curr, Jugador* other){
 char* robar(Jugador* curr, Jugador* other, int recurso_robar){
   if (curr->ciencia>=10){
     curr->ciencia-=10;
-    //printf("Robando recursos.....\n");
     if (recurso_robar==0){
-      int comida_robada = other->comida * 0.1;
+      int comida_robada = (other->comida)*(0.1);
       other->comida-=comida_robada;
       curr->comida+=comida_robada;
-      char * mensaje = calloc(2000, sizeof(char));
-      sprintf(mensaje, "Robando recursos.....\nEl jugador con id %i le ha robado %i de comida a el jugador con id %i\n", curr->id, comida_robada, other->id);
+      char* mensaje = calloc(2000, sizeof(char));
+      sprintf(mensaje, "ROBO EXITOSO\nLe haz robado %i de comida al jugador con id %i\n", curr->id, comida_robada, other->id);
       return mensaje;
     }
     if (recurso_robar==1){
-      int oro_robado = other->oro * 0.1;
+      int oro_robado = (other->oro)*(0.1);
       other->oro-=oro_robado;
       curr->oro+=oro_robado;
-      char * mensaje_segundo_if =calloc(2000, sizeof(char));
-      sprintf(mensaje_segundo_if,"Robando recursos.....\nEl jugador con id %i le ha robado %i de oro a el jugador con id %i\n", curr->id, oro_robado, other->id);
+      char* mensaje_segundo_if =calloc(2000, sizeof(char));
+      sprintf(mensaje_segundo_if,"ROBO EXITOSO\nLe haz robado %i de oro al jugador con id %i\n", curr->id, oro_robado, other->id);
       return mensaje_segundo_if;
     }
   }
   else {
     char* mensaje_else = calloc(500, sizeof(char));
-    sprintf(mensaje_else,"No hay sufiecientes recursos para realizar esta accion\n");
+    sprintf(mensaje_else,"ERROR: No tienes sufiecientes recursos para realizar esta accion\n");
     return mensaje_else;
   }
 }

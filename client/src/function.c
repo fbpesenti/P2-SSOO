@@ -1,7 +1,7 @@
-
 #include <unistd.h>
 #include <stdio.h>
 #include "function.h"
+#include <string.h>
 #include <stdbool.h> 
 
 bool principal_menu(int server_socket){
@@ -15,64 +15,70 @@ bool principal_menu(int server_socket){
     printf("[5] Robar\n");
     printf("[6] Pasar\n");
     printf("[7] Rendirse\n");
-    char c = getchar();
-    getchar();
-    //printf("char: %c\n", c);
-    if (c == '0'){
+    char c[2];
+    char *c_r = calloc(2, sizeof(char));
+    scanf("%s", c);
+    for (int i=0; i<2; i++){
+        c_r[i]=c[i];
+    }
+    //char c = getchar();
+    //getchar();
+    if (c_r[0] == '0'){
         client_send_message(server_socket, 10, "mostar info");
         //mostrar info
-    } else if (c == '1'){
-        char id = menu_crear_aldeano();
-        if (id == '0'){
+    } else if (c_r[0] == '1'){
+        char id_crear_aldeano = menu_crear_aldeano();
+        if (id_crear_aldeano == '0'){
             client_send_message(server_socket, 11, "minero");
-        } else if (id == '1'){
+        } else if (id_crear_aldeano == '1'){
             client_send_message(server_socket, 11, "agricultor");
-        } else if (id == '2'){
+        } else if (id_crear_aldeano == '2'){
             client_send_message(server_socket, 11, "ingeniero");
-        } else if (id == '3'){
+        } else if (id_crear_aldeano == '3'){
             client_send_message(server_socket, 11, "ataque");
-        } else if (id == '4'){
+        } else if (id_crear_aldeano == '4'){
             client_send_message(server_socket, 11, "defensa");
         }
         
 
-    } else if (c == '2'){
-        char id = menu_subir_nivel();
-        printf("id %c\n", id);
-        if (id == '0'){
+    } else if (c_r[0] == '2'){
+        char id_subir_nivel = menu_subir_nivel();
+        printf("id %c\n", id_subir_nivel);
+        if (id_subir_nivel == '0'){
             client_send_message(server_socket, 13, "minero");
-        } else if (id == '1'){
+        } else if (id_subir_nivel == '1'){
             client_send_message(server_socket, 13, "agricultor");
-        } else if (id == '2'){
+        } else if (id_subir_nivel == '2'){
             client_send_message(server_socket, 13, "ingeniero");
-        } else if (id == '3'){
+        } else if (id_subir_nivel == '3'){
             client_send_message(server_socket, 13, "ataque");
-        } else if (id == '4'){
+        } else if (id_subir_nivel == '4'){
             client_send_message(server_socket, 13, "defensa");
         }
-    } else if (c == '3'){
-        char * id = menu_atacar();
+    } else if (c_r[0] == '3'){
+        char * id_atacar = menu_atacar();
         client_send_message(server_socket, 14, "Atacar");
         //printf("id %c\n", id);
-    } else if (c == '4'){
-        char * id = menu_espiar();
+    } else if (c_r[0] == '4'){
+        char * id_espiar = menu_espiar();
         //printf("el id es %s\n", id);
         //printf("no falla\n");
-        client_send_message(server_socket, 15, id);
-    } else if (c == '5'){
-        char* id = menu_robar();
-        client_send_message(server_socket, 16, id);
+        client_send_message(server_socket, 15, id_espiar);
+    } else if (c_r[0] == '5'){
+        char* id_robar = menu_robar();
+        client_send_message(server_socket, 16, id_robar);
     }
-    else if (c == '6'){
+    else if (c_r[0] == '6'){
         printf("Fin del turno\n");
         client_send_message(server_socket, 17, "pasar");
         return false;
     }
-    else if (c == '7'){
+    else if (c_r[0] == '7'){
         printf("rendirse\n");
         client_send_message(server_socket, 18, "rendirse");
         return false;
     }
+    free(c_r);
     return true;
     
 }
@@ -84,9 +90,16 @@ char menu_crear_aldeano(){
     printf("[1] Agricultor\n");
     printf("[2] Ingeniero\n");
     printf("[3] Guerrero\n");
-    char x = getchar();
-    getchar();
-    return x;
+    char x[2];
+    char *x_r = calloc(2, sizeof(char));
+    scanf("%s", x);
+    for (int i = 0; i < 2; i++)
+    {
+        x_r[i] = x[i];
+    }  
+    //char x = getchar();
+    //getchar();
+    return x_r[0];
 }
 
 char menu_subir_nivel(){
@@ -97,9 +110,16 @@ char menu_subir_nivel(){
     printf("[2] Ingeniero\n");
     printf("[3] Ataque\n");
     printf("[4] Defensa\n");
-    char x = getchar();
-    getchar();
-    return x;
+    char x[2];
+    char *x_r = calloc(2, sizeof(char));
+    scanf("%s", x);
+    for (int i = 0; i < 2; i++)
+    {
+        x_r[i] = x[i];
+    }  
+    //char x = getchar();
+    //getchar();
+    return x_r[0];
 }
 
 char menu_atacar(){
@@ -107,14 +127,21 @@ char menu_atacar(){
     printf("Escoger jugador a atacar...\n");
     printf("[0] \n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
-    char x = getchar();
-    getchar();
-    return x;
+    //char x = getchar();
+    //getchar();
+    char x[2];
+    char *x_r = calloc(2, sizeof(char));
+    scanf("%s", x);
+    for (int i = 0; i < 2; i++)
+    {
+        x_r[i] = x[i];
+    }  
+    return x_r[0];
 }
 
 char * menu_espiar(){
-    printf("Menu Espiar\n");
-    printf("Escoger jugador a espiar...\n");
+    printf("\nMenu Espiar\n");
+    printf("Ingresa ID de jugador a espiar:\n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
     char x[2];
     char *x_r = calloc(2, sizeof(char));
@@ -130,51 +157,25 @@ char * menu_espiar(){
 char* menu_robar(){
     printf("\nMenu Robar\n");
     printf("Escoger jugador a robar...\n");
-    //printf("[0] \n");
-    //VARIABLE SEGUN NUMERO DE JUGADORES
     char x[2];
     char *x_r = calloc(2, sizeof(char));
     scanf("%s", x);
     for (int i=0; i<2; i++){
         x_r[i]=x[i];
     }
-    //printf("le quiero robar a %c\n", x_r[0]);
-    //printf("le quiero robar a %c\n", x_r[1]);
-    //char * c1 = getchar();
-    //getchar();
-    printf("\nRobar comida o oro?\n");
+    printf("\nQuieres robar comida u oro?\n");
     printf("[0] Comida \n");
     printf("[1] Oro \n");
-    //VARIABLE SEGUN NUMERO DE JUGADORES
-    //char c2 = getchar();
-    //char elemento_robar[2];
-    //elemento_robar[0]=getchar();
-    //getchar();
     char y[2];
     char *y_r = calloc(2, sizeof(char));
     scanf("%s", y);
     for (int j=0; j<2; j++){
         y_r[j]=y[j];
     }
-    //x_r[1]=elemento_robar;
-    //printf("el elemento a robar es %c\n", y_r[0]);
-
-    //printf("mi string a enviar con ambos elementos es: %s\n", x_r);
-    //char * array[2];
-    //printf("[0] Oro \n");
-    //array[0] = c1;
-    //printf("[1] Oro \n");
-    //array[1] = c2;
-    //printf("[2] Oro \n");
-    //return array;
-    //elemento_robar[1]=0;
-    //x_r[1]=0;
     char *elemento_final = calloc(2, sizeof(char));
     elemento_final[0]=x_r[0];
     elemento_final[1]=y_r[0];
-    //memmove(x_r, y_r, 2);
-    //x_r[2]=0;
-    //printf("elemento final %s\n", elemento_final);
+    elemento_final[2]=0;
     return elemento_final;
 }
 
