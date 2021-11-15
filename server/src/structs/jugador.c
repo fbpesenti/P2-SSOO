@@ -351,7 +351,7 @@ void pasar(Jugador* jug){
   printf("Se ha termiando el turno actual\n");
 }
 
-void rendirse(Jugador* jug){
+int rendirse(Jugador* jug){
   printf("Jugador con id %i se ha rendido\n", jug->id);
   jug->oro = 0;
   jug->comida = 0;
@@ -361,7 +361,9 @@ void rendirse(Jugador* jug){
   jug->n_ingenieros = 0;
   jug->n_guerreros = 0;
   //Aqui hay que eliminar al jugador de los jugadores activos
-
+  int id = jug->id;
+  free(jug);
+  return id;
 }
 
 //int main(int argc, char const *argv[])
