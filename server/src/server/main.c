@@ -151,7 +151,8 @@ int main(int argc, char *argv[]){
       // Mi atención cambia al otro socket
       my_attention = (my_attention + 1) % n_jugadores;
       server_send_message(sockets_array[my_attention], 2, client_message);
-    }else if (msg_code == 10) //El cliente me envió un mensaje a mi (servidor) para MOSTRAR INFO
+    }
+    else if (msg_code == 10) //El cliente me envió un mensaje a mi (servidor) para MOSTRAR INFO
     {
       printf("entre a code 10 \n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
@@ -384,15 +385,15 @@ int main(int argc, char *argv[]){
     //   }
     //   my_attention = (my_attention + 1) % n_jugadores;
     // }
-    // if (msg_code == 19){
-    //   printf("entre a code 19\n");
-    //   char * client_message = server_receive_payload(sockets_array[my_attention]);
-    //   printf("El cliente %d dice: %s\n", my_attention+1, client_message);
-    //   char* response = recolectar_recursos(jugadores_array[my_attention]);
-    //   free(client_message);
-    //   server_send_message(sockets_array[my_attention], 17, response);
-    // // free(response);
-    // }
+    if (msg_code == 19){
+      printf("entre a code 19\n");
+      char * client_message = server_receive_payload(sockets_array[my_attention]);
+      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      char* response = recolectar_recursos(jugadores_array[my_attention]);
+      free(client_message);
+      server_send_message(sockets_array[my_attention], 17, response);
+    // free(response);
+    }
 
     printf("------------------\n");
     server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
