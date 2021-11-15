@@ -29,9 +29,25 @@ void* escuchador(void *atr){
 
 
 int main (int argc, char *argv[]){
-  //Se obtiene la ip y el puerto donde está escuchando el servidor (la ip y puerto de este cliente da igual)
-  char * IP = "0.0.0.0";
-  int PORT = 8080;
+  int PORT;
+  char* IP;
+  if (argc =! 4)
+  {
+    printf("No se pasaron suficientes argumentos");
+    exit(1);
+  }else
+  {
+    for (int i = 1; i < 5; i = i+2)
+    {
+      if (strcmp(argv[i], "-p") == 0)
+      {
+        PORT = atoi(argv[i+1]);
+      }else if (strcmp(argv[i], "-i") == 0)
+      {
+        IP = argv[i+1];
+      } 
+    }    
+  }
 
   // Se prepara el socket
   int server_socket = prepare_socket(IP, PORT);
@@ -70,6 +86,7 @@ int main (int argc, char *argv[]){
     if (msg_code == 3) { // Atento a empezar juego
       pthread_t point;
       char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
       free(message);
       pthread_create(&point, NULL, escuchador, (void*)server_socket);
     }
@@ -140,6 +157,13 @@ int main (int argc, char *argv[]){
     }
     if (msg_code == 10){
       //printf("entre a code 10\n");
+      char * message = client_receive_payload(server_socket);
+      printf("\n%s\n", message);
+      free(message);
+
+    }
+    if (msg_code == 14){
+      //printf("entre a code 15\n");
       char * message = client_receive_payload(server_socket);
       printf("\n%s\n", message);
       free(message);

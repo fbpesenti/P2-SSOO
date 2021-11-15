@@ -57,7 +57,7 @@ bool principal_menu(int server_socket){
         }
     } else if (c_r[0] == '3'){
         char * id_atacar = menu_atacar();
-        client_send_message(server_socket, 14, "Atacar");
+        client_send_message(server_socket, 14, id_atacar);
         //printf("id %c\n", id);
     } else if (c_r[0] == '4'){
         char * id_espiar = menu_espiar();
@@ -125,7 +125,7 @@ char menu_subir_nivel(){
 char menu_atacar(){
     printf("Menu atacar\n");
     printf("Escoger jugador a atacar...\n");
-    printf("[0] \n");
+    //printf("[0] \n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
     //char x = getchar();
     //getchar();
@@ -135,7 +135,8 @@ char menu_atacar(){
     for (int i = 0; i < 2; i++)
     {
         x_r[i] = x[i];
-    }  
+    }    
+    //printf("ESCANEO OK\n");
     return x_r[0];
 }
 
@@ -151,7 +152,7 @@ char * menu_espiar(){
         x_r[i] = x[i];
     }    
     //printf("ESCANEO OK\n");
-    return x_r;
+    return x_r[0];
 }
 
 char* menu_robar(){

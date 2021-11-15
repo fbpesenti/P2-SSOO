@@ -30,6 +30,7 @@ Jugador* jugador_init(char* nombre, int id){
   jug->nivel_ingenieros = 1;
   jug->nivel_ataque = 1;
   jug->nivel_defensa = 1;
+  jug->eliminado = false;
 
   return jug;
 
@@ -58,11 +59,11 @@ void asignar_aldeano(Jugador* jug, int tipo){
   */ 
   if (tipo == 1)
   {
-    jug->n_mineros++; 
+    jug->n_agricultores++;  
   }
   else if (tipo ==2)
   { 
-    jug->n_agricultores++;  
+    jug->n_mineros++;  
   }
   else if (tipo ==3)
   {
@@ -70,7 +71,7 @@ void asignar_aldeano(Jugador* jug, int tipo){
   }
   else if (tipo ==4)
   {
-    jug->n_guerreros ++;
+    jug->n_guerreros++;
   }
   // restar un aldeano de los 9 iniciales
   jug->aldeanos=jug->aldeanos-1;
@@ -157,7 +158,7 @@ void mostrar_informacion(Jugador* jug){
   printf("Aldeanos\n");
   printf("Agricultores: %i - Nivel: %i\n", jug->n_agricultores, jug->nivel_agricultores);
   printf("Mineros: %i- Nivel: %i\n", jug->n_mineros, jug->nivel_minero);
-  printf("Guerrers: %i- Nivel: %i\n", jug->n_guerreros, jug->nivel_guerreros);
+  printf("Guerrers: %i- Nivel: %i\n", jug->n_guerreros, jug->nivel_ataque);
   printf("Ingenieros: %i- Nivel: %i\n", jug->n_ingenieros, jug->nivel_ingenieros);
   
 }
@@ -282,11 +283,13 @@ int subir_nivel(Jugador* jug, int tipo){
   }
 }
 //---------curr ataca a other ---------
-void atacar(Jugador* curr, Jugador* other){
+int atacar(Jugador* curr, Jugador* other){
   //curr->fuerza = curr->nivel_guerreros * curr->nivel_ataque;
   //other->nivel_defensa = (other->nivel_guerreros * other->nivel_ataque) * 2;
   int fuerza_atacante = curr->n_guerreros*curr->nivel_ataque;
-  int fuerza_defensor = other->n_guerreros*other->nivel_defensa*2;
+  printf("cantidad guerreros defensor: %i, nivel defensa defensor: %i\n", other->n_guerreros, other->nivel_defensa);
+  int fuerza_defensor = (other->n_guerreros*other->nivel_defensa)*2;
+  printf("fuerza atacante : %i, fuerza defensor: %i\n", fuerza_atacante, fuerza_defensor);
   if (fuerza_atacante>fuerza_defensor){
   //if (curr > other){
     curr->comida += other->comida;
@@ -295,10 +298,13 @@ void atacar(Jugador* curr, Jugador* other){
     other->oro = 0;
     curr->ciencia += other->ciencia;
     other->ciencia = 0;
+    other->eliminado=true;
+    return 1;
     //ACA SE DEBERIA ELIMINAR EL JUGADOR
 
   } else{
-    curr->nivel_guerreros = curr->n_guerreros/2;
+    curr->n_guerreros = curr->n_guerreros/2;
+    return 0;
 
   }
 
