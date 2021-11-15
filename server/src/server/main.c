@@ -46,7 +46,7 @@ void* common_thread (void *atr){
 
   for (int i = 0; i < 9; i++)
   {
-    char* message = "Elija:\n1.-Agricultor 2.-Minero 3.-Ingeniero 4.-Guerrero\n";
+    char* message = "Elija rol de su aldeano:\n[1] Agricultor\n[2] Minero\n[3] Ingeniero\n[4] Guerrero\n";
     server_send_message(sockets_array[id], 2, message);
     int msg_code = server_receive_id(sockets_array[id]);
     char * type_char = server_receive_payload(sockets_array[id]);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]){
   for (int i = 0; i < 9; i++)
   {
     char* message = (char*)malloc(62 * sizeof(char));
-    sprintf(message, "Aldeano %d:\n1.-Agricultor 2.-Minero 3.-Ingeniero 4.-Guerrero\n", i);
+    sprintf(message, "Aldeano %d:\n[1] Agricultor\n[2] Minero\n[3] Ingeniero\n[4] Guerrero\n", i);
     server_send_message(sockets_array[0], 2, message);
     free(message);
     int msg_code = server_receive_id(sockets_array[0]);
@@ -164,11 +164,11 @@ int main(int argc, char *argv[]){
       int n_mineros = jugadores_array[my_attention]->n_mineros;
       int nivel_minero = jugadores_array[my_attention]->nivel_minero;
       int n_guerreros = jugadores_array[my_attention]->n_guerreros;
-      int nivel_guerreros = jugadores_array[my_attention]->nivel_guerreros;
+      int nivel_ataque = jugadores_array[my_attention]->nivel_ataque;
       int n_ingenieros = jugadores_array[my_attention]->n_ingenieros;
       int nivel_ingenieros = jugadores_array[my_attention]->nivel_ingenieros;
       char* server_message = calloc(2000,sizeof(char));
-      sprintf(server_message, "MOSTRANDO INFORMACION\n\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
+      sprintf(server_message, "MOSTRANDO INFORMACION\n\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_ataque, n_ingenieros, nivel_ingenieros);
       //sprintf(server_message, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
       server_send_message(sockets_array[my_attention], 10, server_message);
   
@@ -293,10 +293,27 @@ int main(int argc, char *argv[]){
     {
       printf("entre a code 14\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      printf("El cliente %d dice: atacar a jugador con id %s\n", my_attention+1, client_message);
+      int client_message_int = atoi(client_message);
+      //printf("el jugador a atacar es el con id: %i\n");
+      if (jugadores_array[client_message_int]->eliminado==false){
+        int response = atacar(jugadores_array[my_attention], jugadores_array[client_message_int]);
+        if (response==1){
+          server_send_message(sockets_array[my_attention], 14, "\nATAQUE EXITOSO\n");
+          server_send_message(sockets_array[client_message_int], 14, "\nHAZ SIDO ELIMINADO\n");
+          printf("El jugador %i ha eliminado al jugador %i\n", jugadores_array[my_attention]->id, jugadores_array[client_message_int]->id);
+        }
+        else {
+          server_send_message(sockets_array[my_attention], 14, "\nATAQUE FALLIDO\n");
+        }
+      }
+      else {
+        server_send_message(sockets_array[my_attention], 14, "\nESTE JUGADOR YA HA SIDO ELIMINADO: NO SE PUEDE ATACAR\n");
+      }
+      free(client_message);
       // Le enviamos la respuesta
-      char * response = "funcion por hacer";
-      server_send_message(sockets_array[my_attention], 11, response);
+      //char * response = "funcion por hacer";
+      //server_send_message(sockets_array[my_attention], 14, response);
     }
     if (msg_code == 15) //El cliente me envió un mensaje a mi (servidor) ESPIAR
     {
@@ -304,9 +321,14 @@ int main(int argc, char *argv[]){
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: espiar a jugador con id %s\n", my_attention+1, client_message);
       int client_message_int = atoi(client_message);
-      char * response = espiar(jugadores_array[my_attention], jugadores_array[client_message_int]);
-      free(client_message);
-      server_send_message(sockets_array[my_attention], 15, response);
+      if (jugadores_array[client_message_int]->eliminado==false){
+        char * response = espiar(jugadores_array[my_attention], jugadores_array[client_message_int]);
+        free(client_message);
+        server_send_message(sockets_array[my_attention], 15, response);
+      }
+      else {
+        server_send_message(sockets_array[my_attention], 15, "\nESTE JUGADOR YA HA SIDO ELIMINADO: NO SE PUEDE ESPIAR\n");
+      }
     } 
     if (msg_code == 16) //El cliente me envió un mensaje a mi (servidor) robar
     {
@@ -319,9 +341,16 @@ int main(int argc, char *argv[]){
       recurso_robar[0] = client_message[1];
       int id_robar_int = atoi(id_robar);
       int recurso_robar_int = atoi(recurso_robar);
-      char * response = robar(jugadores_array[my_attention], jugadores_array[id_robar_int], recurso_robar_int);
-      free(client_message);
-      server_send_message(sockets_array[my_attention], 16, response);
+
+      if (jugadores_array[id_robar_int]->eliminado==false){
+        char * response = robar(jugadores_array[my_attention], jugadores_array[id_robar_int], recurso_robar_int);
+        free(client_message);
+        server_send_message(sockets_array[my_attention], 16, response);
+      }
+      else {
+        server_send_message(sockets_array[my_attention], 16, "\nESTE JUGADOR YA HA SIDO ELIMINADO: NO SE PUEDE ROBAR\n");      
+      }
+
     } if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
     {
       printf("entre a code 17\n");
@@ -331,7 +360,33 @@ int main(int argc, char *argv[]){
       char * response = "Jugador paso turno";
       server_send_message(sockets_array[my_attention], 11, response);
       // Mi atención cambia al otro socket
-      my_attention = (my_attention + 1) % n_jugadores;
+      int jugadores_vivos = 0;
+      for (int i = 0; i < n_jugadores; i++)
+      {
+        if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
+          jugadores_vivos++;
+          my_attention = i;
+        }
+      }
+      if (jugadores_vivos != 1)
+      {
+        int i = 1;
+        while (1)
+        {
+          if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
+            my_attention = (my_attention + i) % n_jugadores;
+            break;
+          }
+          else {
+            i++;
+          }
+        }
+      }
+      else {
+        server_send_message(sockets_array[my_attention], 11, "\nERES EL GANADOR DEL JUEGO\n");
+        printf("El jugador con id %i y nombre %s ha ganado\n", jugadores_array[my_attention]->id, jugadores_array[my_attention]->nombre);
+      }
+      //my_attention = (my_attention + 1) % n_jugadores;
       
     } 
     if (msg_code == 18) //El cliente me envió un mensaje a mi (servidor) rendirse

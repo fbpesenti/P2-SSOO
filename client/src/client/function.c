@@ -35,10 +35,8 @@ bool principal_menu(int server_socket){
         } else if (id_crear_aldeano == '2'){
             client_send_message(server_socket, 11, "ingeniero");
         } else if (id_crear_aldeano == '3'){
-            client_send_message(server_socket, 11, "ataque");
-        } else if (id_crear_aldeano == '4'){
-            client_send_message(server_socket, 11, "defensa");
-        }
+            client_send_message(server_socket, 11, "guerrero");
+        } 
         
 
     } else if (c_r[0] == '2'){
@@ -57,7 +55,7 @@ bool principal_menu(int server_socket){
         }
     } else if (c_r[0] == '3'){
         char * id_atacar = menu_atacar();
-        client_send_message(server_socket, 14, "Atacar");
+        client_send_message(server_socket, 14, id_atacar);
         //printf("id %c\n", id);
     } else if (c_r[0] == '4'){
         char * id_espiar = menu_espiar();
@@ -122,10 +120,10 @@ char menu_subir_nivel(){
     return x_r[0];
 }
 
-char menu_atacar(){
+char * menu_atacar(){
     printf("Menu atacar\n");
     printf("Escoger jugador a atacar...\n");
-    printf("[0] \n");
+    //printf("[0] \n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
     //char x = getchar();
     //getchar();
@@ -135,8 +133,9 @@ char menu_atacar(){
     for (int i = 0; i < 2; i++)
     {
         x_r[i] = x[i];
-    }  
-    return x_r[0];
+    }    
+    //printf("ESCANEO OK\n");
+    return x_r;
 }
 
 char * menu_espiar(){
