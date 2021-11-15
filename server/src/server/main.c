@@ -115,6 +115,8 @@ int main(int argc, char *argv[]){
   while (1)
   {
     int msg_code = server_receive_id(sockets_array[0]);
+    char * client_message = server_receive_payload(sockets_array[0]);
+    free(client_message);
     if (msg_code == 0)
     {
       for (int i = 0; i < n_jugadores; i++)
@@ -138,13 +140,8 @@ int main(int argc, char *argv[]){
     {
       //printf("entre a code 1\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
-      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      free(client_message);
 
-      // Le enviaremos el mismo mensaje invertido jeje
-      char * response = revert(client_message);
-
-      // Le enviamos la respuesta
-      server_send_message(sockets_array[my_attention], 1, response);
     }
     else if (msg_code == 2){ //El cliente le envía un mensaje al otro cliente
       printf("entre a code 2\n");
