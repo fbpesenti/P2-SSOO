@@ -359,7 +359,18 @@ int main(int argc, char *argv[]){
       char * response = "Jugador paso turno";
       server_send_message(sockets_array[my_attention], 11, response);
       // Mi atención cambia al otro socket
-      my_attention = (my_attention + 1) % n_jugadores;
+      int i = 1;
+      while (1)
+      {
+        if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
+          my_attention = (my_attention + i) % n_jugadores;
+          break;
+        }
+        else {
+          i++;
+        }
+      }
+      //my_attention = (my_attention + 1) % n_jugadores;
       
     } 
     if (msg_code == 18) //El cliente me envió un mensaje a mi (servidor) rendirse
