@@ -51,12 +51,13 @@ bool principal_menu(int server_socket){
             client_send_message(server_socket, 13, "defensa");
         }
     } else if (c == '3'){
-        char id = menu_atacar();
+        char * id = menu_atacar();
         client_send_message(server_socket, 14, "Atacar");
         //printf("id %c\n", id);
     } else if (c == '4'){
-        char id = menu_espiar();
-        printf("el id es %s\n", id);
+        char * id = menu_espiar();
+        //printf("el id es %s\n", id);
+        //printf("no falla\n");
         client_send_message(server_socket, 15, id);
     } else if (c == '5'){
         char* id = menu_robar();
@@ -111,13 +112,19 @@ char menu_atacar(){
     return x;
 }
 
-char menu_espiar(){
+char * menu_espiar(){
     printf("Menu Espiar\n");
     printf("Escoger jugador a espiar...\n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
-    char x = getchar();
-    getchar();
-    return x;
+    char x[2];
+    char *x_r = calloc(2, sizeof(char));
+    scanf("%s", x);
+    for (int i = 0; i < 2; i++)
+    {
+        x_r[i] = x[i];
+    }    
+    //printf("ESCANEO OK\n");
+    return x_r;
 }
 
 char * menu_robar(){
