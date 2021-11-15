@@ -70,6 +70,7 @@ int main (int argc, char *argv[]){
     if (msg_code == 3) { // Atento a empezar juego
       pthread_t point;
       char * message = client_receive_payload(server_socket);
+      printf("%s\n", message);
       free(message);
       pthread_create(&point, NULL, escuchador, (void*)server_socket);
     }
