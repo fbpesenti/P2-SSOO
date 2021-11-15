@@ -301,6 +301,7 @@ int main(int argc, char *argv[]){
         if (response==1){
           server_send_message(sockets_array[my_attention], 14, "\nATAQUE EXITOSO\n");
           server_send_message(sockets_array[client_message_int], 14, "\nHAZ SIDO ELIMINADO\n");
+          printf("El jugador %i ha eliminado al jugador %i\n", jugadores_array[my_attention]->id, jugadores_array[client_message_int]->id);
         }
         else {
           server_send_message(sockets_array[my_attention], 14, "\nATAQUE FALLIDO\n");
@@ -359,16 +360,31 @@ int main(int argc, char *argv[]){
       char * response = "Jugador paso turno";
       server_send_message(sockets_array[my_attention], 11, response);
       // Mi atención cambia al otro socket
-      int i = 1;
-      while (1)
+      int jugadores_vivos = 0;
+      for (int i = 0; i < n_jugadores; i++)
       {
         if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
-          my_attention = (my_attention + i) % n_jugadores;
-          break;
+          jugadores_vivos++;
+          my_attention = i;
         }
-        else {
-          i++;
+      }
+      if (jugadores_vivos != 1)
+      {
+        int i = 1;
+        while (1)
+        {
+          if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
+            my_attention = (my_attention + i) % n_jugadores;
+            break;
+          }
+          else {
+            i++;
+          }
         }
+      }
+      else {
+        server_send_message(sockets_array[my_attention], 11, "\nERES EL GANADOR DEL JUEGO\n");
+        printf("El jugador con id %i y nombre %s ha ganado\n", jugadores_array[my_attention]->id, jugadores_array[my_attention]->nombre);
       }
       //my_attention = (my_attention + 1) % n_jugadores;
       
