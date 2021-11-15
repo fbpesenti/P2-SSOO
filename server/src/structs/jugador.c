@@ -332,25 +332,31 @@ char* espiar(Jugador* curr, Jugador* other){
 //---------curr roba a other -------------------
 //recurso_robar es un int que representa si eligio robar comida o oro
 //recurso_robar=0 es comida y recurso_robar=1 es oro
-void robar(Jugador* curr, Jugador* other, int recurso_robar){
+char* robar(Jugador* curr, Jugador* other, int recurso_robar){
   if (curr->ciencia>=10){
     curr->ciencia-=10;
-    printf("Robando recursos.....\n");
+    //printf("Robando recursos.....\n");
     if (recurso_robar==0){
-      int comida_robada = (other->comida)*(0.1);
+      int comida_robada = other->comida * 0.1;
       other->comida-=comida_robada;
       curr->comida+=comida_robada;
-      printf("El jugador con id %i le ha robado %i de comida a el jugador con id %i\n", curr->id, comida_robada, other->id);
+      char * mensaje = calloc(2000, sizeof(char));
+      sprintf(mensaje, "Robando recursos.....\nEl jugador con id %i le ha robado %i de comida a el jugador con id %i\n", curr->id, comida_robada, other->id);
+      return mensaje;
     }
     if (recurso_robar==1){
-      int oro_robado = (other->oro)*(0.1);
+      int oro_robado = other->oro * 0.1;
       other->oro-=oro_robado;
       curr->oro+=oro_robado;
-      printf("El jugador con id %i le ha robado %i de oro a el jugador con id %i\n", curr->id, oro_robado, other->id);
+      char * mensaje_segundo_if =calloc(2000, sizeof(char));
+      sprintf(mensaje_segundo_if,"Robando recursos.....\nEl jugador con id %i le ha robado %i de oro a el jugador con id %i\n", curr->id, oro_robado, other->id);
+      return mensaje_segundo_if;
     }
   }
   else {
-    printf("No hay sufiecientes recursos para realizar esta accion\n");
+    char* mensaje_else = calloc(500, sizeof(char));
+    sprintf(mensaje_else,"No hay sufiecientes recursos para realizar esta accion\n");
+    return mensaje_else;
   }
 }
 

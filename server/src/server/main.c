@@ -246,10 +246,16 @@ int main(int argc, char *argv[]){
       printf("entre a code 16\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
       printf("El cliente %d dice: %s\n", my_attention+1, client_message);
-      // Le enviamos la respuesta
-      char * response = "funcion por hacer";
-      server_send_message(sockets_array[my_attention], 11, response);
-    } if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
+      char* id_robar = calloc(1, sizeof(char));
+      id_robar[0]=client_message[0];
+      char* recurso_robar = calloc(1, sizeof(char));
+      recurso_robar[0] = client_message[1];
+      int id_robar_int = atoi(id_robar);
+      int recurso_robar_int = atoi(recurso_robar);
+      char * response = robar(jugadores_array[my_attention], jugadores_array[id_robar_int], recurso_robar_int);
+      server_send_message(sockets_array[my_attention], 16, response);
+    }
+    if (msg_code == 17) //El cliente me envió un mensaje a mi (servidor) pasar
     {
       printf("entre a code 17\n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);

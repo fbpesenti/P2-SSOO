@@ -58,7 +58,7 @@ void atacar(Jugador* curr, Jugador* other);
 // Espiar
 char * espiar(Jugador* curr, Jugador* other);
 // Robar
-void robar(Jugador* curr, Jugador* other, int recurso_robar);
+char * robar(Jugador* curr, Jugador* other, int recurso_robar);
 // Pasar
 void pasar(Jugador* jug);
 // Rendirse

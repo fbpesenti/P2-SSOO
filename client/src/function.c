@@ -61,7 +61,7 @@ bool principal_menu(int server_socket){
         client_send_message(server_socket, 15, id);
     } else if (c == '5'){
         char* id = menu_robar();
-        client_send_message(server_socket, 16, "robar");
+        client_send_message(server_socket, 16, id);
     }
     else if (c == '6'){
         printf("Fin del turno\n");
@@ -127,26 +127,55 @@ char * menu_espiar(){
     return x_r;
 }
 
-char * menu_robar(){
-    printf("Menu Robar\n");
+char* menu_robar(){
+    printf("\nMenu Robar\n");
     printf("Escoger jugador a robar...\n");
-    printf("[0] \n");
+    //printf("[0] \n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
-    char * c1 = getchar();
-    getchar();
-    printf("Robar comida o oro?\n");
+    char x[2];
+    char *x_r = calloc(2, sizeof(char));
+    scanf("%s", x);
+    for (int i=0; i<2; i++){
+        x_r[i]=x[i];
+    }
+    //printf("le quiero robar a %c\n", x_r[0]);
+    //printf("le quiero robar a %c\n", x_r[1]);
+    //char * c1 = getchar();
+    //getchar();
+    printf("\nRobar comida o oro?\n");
     printf("[0] Comida \n");
     printf("[1] Oro \n");
     //VARIABLE SEGUN NUMERO DE JUGADORES
-    char c2 = getchar();
-    getchar();
-    char * array[2];
-    printf("[0] Oro \n");
-    array[0] = c1;
-    printf("[1] Oro \n");
-    array[1] = c2;
-    printf("[2] Oro \n");
-    return array;
+    //char c2 = getchar();
+    //char elemento_robar[2];
+    //elemento_robar[0]=getchar();
+    //getchar();
+    char y[2];
+    char *y_r = calloc(2, sizeof(char));
+    scanf("%s", y);
+    for (int j=0; j<2; j++){
+        y_r[j]=y[j];
+    }
+    //x_r[1]=elemento_robar;
+    //printf("el elemento a robar es %c\n", y_r[0]);
+
+    //printf("mi string a enviar con ambos elementos es: %s\n", x_r);
+    //char * array[2];
+    //printf("[0] Oro \n");
+    //array[0] = c1;
+    //printf("[1] Oro \n");
+    //array[1] = c2;
+    //printf("[2] Oro \n");
+    //return array;
+    //elemento_robar[1]=0;
+    //x_r[1]=0;
+    char *elemento_final = calloc(2, sizeof(char));
+    elemento_final[0]=x_r[0];
+    elemento_final[1]=y_r[0];
+    //memmove(x_r, y_r, 2);
+    //x_r[2]=0;
+    //printf("elemento final %s\n", elemento_final);
+    return elemento_final;
 }
 
 
