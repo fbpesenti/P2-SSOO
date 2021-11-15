@@ -353,7 +353,7 @@ int main(int argc, char *argv[]){
       if(n_jugadores==1){
         char* response2="Se termina el juego GANA\n";
         my_attention = (my_attention + 1) % n_jugadores;
-        server_send_message(sockets_array[my_attention], 19, response2);
+        server_send_message(sockets_array[my_attention], 11, response2);
       }
       my_attention = (my_attention + 1) % n_jugadores;
       
