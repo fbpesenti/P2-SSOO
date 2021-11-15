@@ -33,6 +33,7 @@ struct jugador
   int nivel_defensa;
   int defensa;
   int fuerza;
+  bool eliminado;
 };
 
 // Inicializar el jugador con los stats iniciales
@@ -54,7 +55,7 @@ int subir_nivel_ingeniero(Jugador* jug);
 int subir_nivel_ataque(Jugador* jug);
 int subir_nivel_defensa(Jugador* jug);
 // Atacar contrincante
-void atacar(Jugador* curr, Jugador* other);
+int atacar(Jugador* curr, Jugador* other);
 // Espiar
 char * espiar(Jugador* curr, Jugador* other);
 // Robar
