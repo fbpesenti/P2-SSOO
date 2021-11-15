@@ -23,6 +23,7 @@ char * revert(char * message){
 }
 
 int n_jugadores = 0;
+int ready = 0;
 Jugador* jugadores_array[4];
 int sockets_array[4];
 int server_socket;
@@ -37,6 +38,9 @@ void* common_thread (void *atr){
   server_send_message(sockets_array[id], 1, welcome);
   free(welcome);
   pthread_mutex_unlock(&lock);
+  pthread_mutex_lock(&lock2);
+  n_jugadores++;
+  pthread_mutex_unlock(&lock2);
   int msg_code = server_receive_id(sockets_array[id]);
   char * client_name = server_receive_payload(sockets_array[id]);
   jugadores_array[id] = jugador_init(client_name, id);
@@ -55,7 +59,7 @@ void* common_thread (void *atr){
   }
 
   pthread_mutex_lock(&lock2);
-  n_jugadores++;
+  ready++;
   pthread_mutex_unlock(&lock2);
 
   pthread_exit(NULL);
@@ -81,7 +85,9 @@ int main(int argc, char *argv[]){
   // Se prepara socket de servidor
   server_socket = prepare_socket(IP, PORT);
   sockets_array[0] = get_client(server_socket);
-
+  pthread_mutex_lock(&lock2);
+  n_jugadores++;
+  pthread_mutex_unlock(&lock2);
   pthread_t creador;
   pthread_create(&creador, NULL, creador_threads, (void*)NULL);
 
@@ -107,10 +113,11 @@ int main(int argc, char *argv[]){
     int type = atoi(type_char);
     asignar_aldeano(jugadores_array[0], type);
   }
+  server_send_message(sockets_array[0], 3, "Atenti");
+
   pthread_mutex_lock(&lock2);
-  n_jugadores++;
+  ready++;
   pthread_mutex_unlock(&lock2);
-  server_send_message(sockets_array[0], 3, "");
   
   while (1)
   {
@@ -119,11 +126,17 @@ int main(int argc, char *argv[]){
     free(client_message);
     if (msg_code == 0)
     {
-      for (int i = 0; i < n_jugadores; i++)
+      if(n_jugadores == ready)
       {
-        server_send_message(sockets_array[i], 5, "Comienza el juego");
+        for (int i = 0; i < n_jugadores; i++)
+        {
+          server_send_message(sockets_array[i], 5, "Comienza el juego");
+        }
+        break;
+      }else
+      {
+        server_send_message(sockets_array[0], 3, "Faltan jugadores por estar listos.");
       }
-      break;
     }
   }
   
