@@ -365,26 +365,34 @@ int main(int argc, char *argv[]){
       {
         if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
           jugadores_vivos++;
-          my_attention = i;
         }
       }
-      if (jugadores_vivos != 1)
-      {
+      if (jugadores_vivos == 1) {
+        for (int i = 0; i < n_jugadores; i++)
+        {
+          if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
+          my_attention = (my_attention + i) % n_jugadores;
+          //printf("ganaste\n");
+          printf("my attention %i\n", my_attention);
+          server_send_message(sockets_array[my_attention], 11, "\nHAZ GANADO\n");
+          // mandar mensaje que gano
+          break;
+          }
+        }
+      }
+      else {
         int i = 1;
         while (1)
         {
           if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
             my_attention = (my_attention + i) % n_jugadores;
+            i = 1;
             break;
           }
           else {
             i++;
           }
         }
-      }
-      else {
-        server_send_message(sockets_array[my_attention], 11, "\nERES EL GANADOR DEL JUEGO\n");
-        printf("El jugador con id %i y nombre %s ha ganado\n", jugadores_array[my_attention]->id, jugadores_array[my_attention]->nombre);
       }
       //my_attention = (my_attention + 1) % n_jugadores;
       
