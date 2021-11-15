@@ -35,10 +35,8 @@ bool principal_menu(int server_socket){
         } else if (id_crear_aldeano == '2'){
             client_send_message(server_socket, 11, "ingeniero");
         } else if (id_crear_aldeano == '3'){
-            client_send_message(server_socket, 11, "ataque");
-        } else if (id_crear_aldeano == '4'){
-            client_send_message(server_socket, 11, "defensa");
-        }
+            client_send_message(server_socket, 11, "guerrero");
+        } 
         
 
     } else if (c_r[0] == '2'){

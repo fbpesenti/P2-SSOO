@@ -56,11 +56,11 @@ void asignar_aldeano(Jugador* jug, int tipo){
   */ 
   if (tipo == 1)
   {
-    jug->n_mineros++; 
+    jug->n_agricultores++;  
   }
   else if (tipo ==2)
   { 
-    jug->n_agricultores++;  
+    jug->n_mineros++;  
   }
   else if (tipo ==3)
   {
