@@ -56,24 +56,29 @@ bool principal_menu(int server_socket){
     } else if (c_r[0] == '3'){
         char * id_atacar = menu_atacar();
         client_send_message(server_socket, 14, id_atacar);
+        free(id_atacar);
         //printf("id %c\n", id);
     } else if (c_r[0] == '4'){
         char * id_espiar = menu_espiar();
         //printf("el id es %s\n", id);
         //printf("no falla\n");
         client_send_message(server_socket, 15, id_espiar);
+        free(id_espiar);
     } else if (c_r[0] == '5'){
         char* id_robar = menu_robar();
         client_send_message(server_socket, 16, id_robar);
+        free(id_robar);
     }
     else if (c_r[0] == '6'){
         printf("Fin del turno\n");
         client_send_message(server_socket, 17, "pasar");
+        free(c_r);
         return false;
     }
     else if (c_r[0] == '7'){
         printf("rendirse\n");
         client_send_message(server_socket, 18, "rendirse");
+        free(c_r);
         return false;
     }
     free(c_r);
@@ -97,7 +102,10 @@ char menu_crear_aldeano(){
     }  
     //char x = getchar();
     //getchar();
-    return x_r[0];
+    char ret;
+    ret = x_r[0];
+    free(x_r);
+    return ret;
 }
 
 char menu_subir_nivel(){
@@ -117,7 +125,10 @@ char menu_subir_nivel(){
     }  
     //char x = getchar();
     //getchar();
-    return x_r[0];
+    char ret;
+    ret = x_r[0];
+    free(x_r);
+    return ret;
 }
 
 char * menu_atacar(){
@@ -175,6 +186,8 @@ char* menu_robar(){
     elemento_final[0]=x_r[0];
     elemento_final[1]=y_r[0];
     elemento_final[2]=0;
+    free(y_r);
+    free(x_r);
     return elemento_final;
 }
 
