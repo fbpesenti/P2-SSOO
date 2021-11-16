@@ -158,6 +158,8 @@ int main(int argc, char *argv[]){
   }
   
   char* game_begin = "inicio el juego";
+  char* response2 = recolectar_recursos(jugadores_array[0]);
+  server_send_message(sockets_array[0], 19, response2);
   server_send_message(sockets_array[0], 1, game_begin);
   
   int my_attention = 0;
@@ -445,7 +447,6 @@ int main(int argc, char *argv[]){
       char * response = "Jugador se rindio\n";
       server_send_message(sockets_array[my_attention], 20, response);
       // Mi atención cambia al otro socket
-      n_jugadores=n_jugadores-1;
       my_attention = (my_attention + 1) % n_jugadores;
       
     }

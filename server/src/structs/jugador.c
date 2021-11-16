@@ -18,9 +18,9 @@ Jugador* jugador_init(char* nombre, int id){
   // Inicializan en cero y cuando son asignados los aldeanos 
   // los niveles deben en empezar en 1 y se asignan los nueve
   // aldeanos al cada tipo
-  jug->oro = 100;
-  jug->comida = 100;
-  jug->ciencia = 100;
+  jug->oro = 0;
+  jug->comida = 0;
+  jug->ciencia = 0;
   jug->n_mineros = 0;
   jug->n_agricultores = 0;
   jug->n_ingenieros = 0;
