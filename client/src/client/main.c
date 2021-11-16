@@ -24,6 +24,7 @@ void* escuchador(void *atr){
   printf("Presione enter para empezar\n");
   char * opcion = get_input();
   client_send_message(server_socket, 0, opcion);
+  free(opcion);
   pthread_exit(NULL);
 }
 
@@ -53,7 +54,8 @@ int main (int argc, char *argv[]){
   int server_socket = prepare_socket(IP, PORT);
 
   int intro = 1;
-
+  pthread_t point;
+  
   while(intro){
     int msg_code = client_receive_id(server_socket);
 
@@ -62,6 +64,7 @@ int main (int argc, char *argv[]){
     {
       char * message = client_receive_payload(server_socket);
       printf("ingresó jugador: %s\n", message);
+      free(message);
     }
     
     // solicitud de nombre
@@ -73,6 +76,7 @@ int main (int argc, char *argv[]){
       printf("ingrese su nombre a continuacion: ");
       char * name = get_input();
       client_send_message(server_socket, 0, name);
+      free(name);
     }
     if (msg_code == 2) { //Recibimos soliitud de ingresar aldeano
       char * message = client_receive_payload(server_socket);
@@ -82,9 +86,9 @@ int main (int argc, char *argv[]){
       printf("ingrese opción: ");
       char * opcion = get_input();
       client_send_message(server_socket, 0, opcion);
+      free(opcion);
     }
     if (msg_code == 3) { // Atento a empezar juego
-      pthread_t point;
       char * message = client_receive_payload(server_socket);
       printf("%s\n", message);
       free(message);
@@ -100,6 +104,12 @@ int main (int argc, char *argv[]){
       printf("%s\n", message);
       free(message);
       intro = 0;
+    }
+    if (msg_code == 6) { // comienzo de juego
+      char * message = client_receive_payload(server_socket);
+      // printf("%s\n", message);
+      free(message);
+      pthread_detach(point);
     }
   }
 
@@ -147,6 +157,7 @@ int main (int argc, char *argv[]){
       char * response = get_input();
 
       client_send_message(server_socket, option, response);
+      free(response);
     }
     
     if (msg_code == 11) { //Recibimos un mensaje del servidor
@@ -194,6 +205,13 @@ int main (int argc, char *argv[]){
       printf("\n%s\n", message);
       free(message);
       client_send_message(server_socket, 17, "mori");
+    }
+    if (msg_code == 21){
+      //printf("entre a code 19\n");
+      char * message = client_receive_payload(server_socket);
+      printf("\n%s\n", message);
+      free(message);
+      return(0);
     }
 
     //printf("------------------\n");
