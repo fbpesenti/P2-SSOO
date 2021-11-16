@@ -61,13 +61,12 @@ Los msg code recibidos con su respectiva asociación son los siguientes:
 ## Principales Funciones del programa
 - se conectan los clientes e inicializan los jugadores correctamente
 - funciona correctamente cada una de las opciones del menú
--
+
 ## Supuestos
 - El recolectar recursos se muestra en todos los turnos menos en el primero que se parte con 100 de cada recurso
 - Cuando el jugador necesita el id de otro jugador en atacar/espiar/robar el jugador sabe que va de 0 a n-1, siendo n la cantidad de jugadores.
--
+
 ## FUNCIONAMIENTO (Para facilitar corrección)
 - Rendirse solo funciona con dos clientes
 - Cunado un jugador gana no se acaba el flujo del juego, solo avisa al ganador que ganó
-
 
