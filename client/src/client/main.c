@@ -31,10 +31,10 @@ void* escuchador(void *atr){
 int main (int argc, char *argv[]){
   int PORT;
   char* IP;
-  if (argc =! 4)
+  if (argc != 5)
   {
-    printf("No se pasaron suficientes argumentos");
-    exit(1);
+    printf("No se pasaron suficientes argumentos\n");
+    return 1;
   }else
   {
     for (int i = 1; i < 5; i = i+2)
@@ -188,6 +188,14 @@ int main (int argc, char *argv[]){
       printf("\n%s\n", message);
       free(message);
     }
+    if (msg_code == 20){
+      //printf("entre a code 19\n");
+      char * message = client_receive_payload(server_socket);
+      printf("\n%s\n", message);
+      free(message);
+      client_send_message(server_socket, 17, "mori");
+    }
+
     //printf("------------------\n");
     
   }

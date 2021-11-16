@@ -381,6 +381,7 @@ void rendirse(Jugador* jug){
   jug->n_agricultores = 0;
   jug->n_ingenieros = 0;
   jug->n_guerreros = 0;
+  jug->eliminado = true;
   //Aqui hay que eliminar al jugador de los jugadores activos
 
 }

@@ -80,10 +80,10 @@ void* creador_threads(void *atr){
 int main(int argc, char *argv[]){
   int PORT;
   char* IP;
-  if (argc =! 4)
+  if (argc != 5)
   {
-    printf("No se pasaron suficientes argumentos");
-    exit(1);
+    printf("No se pasaron suficientes argumentos\n");
+    return 1;
   }else
   {
     for (int i = 1; i < 5; i = i+2)
@@ -443,14 +443,9 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       rendirse(jugadores_array[my_attention]);
       char * response = "Jugador se rindio\n";
-      server_send_message(sockets_array[my_attention], 11, response);
+      server_send_message(sockets_array[my_attention], 20, response);
       // Mi atención cambia al otro socket
       n_jugadores=n_jugadores-1;
-      if(n_jugadores==1){
-        char* response2="Se termina el juego GANA\n";
-        my_attention = (my_attention + 1) % n_jugadores;
-        server_send_message(sockets_array[my_attention], 11, response2);
-      }
       my_attention = (my_attention + 1) % n_jugadores;
       
     }
