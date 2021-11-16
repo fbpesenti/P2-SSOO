@@ -18,19 +18,19 @@ Actualmente se utiliza en el código el address: 0.0.0.0 y port: 8080, por lo qu
 
 Luego de tener inicializados a el servido y a los clientes, en consola se debe ingresar los nombres de los jugadores (por parte de los clientes) y se asignan los distintos aldeanos a su correspondiente rol. Cuando se encuentra todo listo el líder (cliente que se conecte primero) puede iniciar el juego presionando enter.
 
-Cada jugador en su respectivo turno tendrá acceso a un menú en el cual se encontraran las opciones de Mostrar información, Crear Aldeano, Subir de Nivel, Atacar, Espiar, Robar, Pasar y Rendirse. Cada opción se despegara en la consola acompañada de un numero el cual el jugador deberá apretar según la opción deseada.
+Cada jugador en su respectivo turno tendrá acceso a un menú en el cual se encontrarán las opciones de Mostrar información, Crear Aldeano, Subir de Nivel, Atacar, Espiar, Robar, Pasar y Rendirse. Cada opción se despegará en la consola acompañada de un numero el cual el jugador deberá apretar según la opción deseada, ciertas opciones como Crear Aldeano, Subir Nivel, Espiar y Robar, se despliega un sub menú en donde deben precisar sus decisiones respectivas.
 
 ## Paquetes
 Los paquetes utilizados 
 
 ## Decisiones de diseño
-En primer lugar, el servidor es quien realiza toda la lógica del juego, mientras que el cliente es quien escoge que decisiones tomar. Se dispone de dos carpetas independientes, client y server. A continuación, se explicara cada una de ellas
+En primer lugar, el servidor es quien realiza toda la lógica del juego, mientras que el cliente es quien escoge que decisiones tomar. Se dispone de dos carpetas independientes, client y server. A continuación, se explicara cada una de ellas.
 
 ### Server
-Como se mencionó anteriormente, el servidor es quien realiza la lógica del juego, por lo que se incluye el archivo jugador.c en donde se construye la lógica de cada una de las opciones las cuales podría escoger el cliente, junto con los archivos comunication.c y conection.c en donde se maneja las conexiones y comunicaciones con el cliente.
-Por último, se encuentra el archivo main.c en donde se reciben las opciones escogidas por el cliente, se realiza la lógica según sea el msg code recibido, y se envía la respuesta al cliente.
+Como se mencionó anteriormente, el servidor es quien se encarga de la lógica del juego, por lo que se incluye el archivo jugador.c en donde se construye la lógica de cada una de las opciones las cuales podría escoger el cliente, junto con los archivos comunication.c y conection.c en donde se maneja las conexiones con el cliente.
+Por último, se encuentra el archivo main.c en donde se reciben las opciones escogidas por el cliente, se realiza la lógica según sea el msg code recibido, y se envía la respuesta correspondiente al cliente.
 
-Los msg code con su respectiva explicación son los siguientes:
+Los msg code  a recibir con su respectiva acción son los siguientes:
 - msg_code: 10 -> Mostrar información 
 - msg_code: 11 -> Crear Aldeano
 - msg_code: 13 -> Subir Nivel 
@@ -41,8 +41,8 @@ Los msg code con su respectiva explicación son los siguientes:
 - msg_code: 18 -> Rendirse
 
 ### Cliente
-El cliente tiene la única labor de escoger la opción que desea que se ejecute. Los archivos que contiene son: function.c en donde se realiza el menú de opciones, es aqui en donde se envía un msg code, según la opción escogida, al servidor. También se encuentran los archivos comunication.c y conection.c en donde se maneja las conexiones y comunicaciones con el servidor. Finalmente se encuentra el archivo main.c en donde se recibe los msg code del servidor y, según el msg code recibido, se despliega en consola al cliente la respuesta correspondiente.
-Los msg code con su respectiva explicación son los siguientes:
+El cliente tiene la única labor de escoger la opción que desea que se ejecute y desplegar la información al jugador. Los archivos que contiene son: function.c en donde se realiza el menú de opciones, es aqui en donde se envía un msg code, según la opción escogida, al servidor, también se encuentran los archivos comunication.c y conection.c en donde se maneja las conexiones con el servidor. Finalmente se encuentra el archivo main.c en donde se recibe los msg code del servidor y, según el msg code recibido, se despliega en consola al cliente la respuesta correspondiente.
+Los msg code recibidos con su respectiva asociación son los siguientes:
 
 - msg_code: 1 -> Solicitar nombre
 - msg_code: 2 -> Asignar Aldeano
