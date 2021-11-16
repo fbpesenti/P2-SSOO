@@ -8,16 +8,15 @@
 - Maria Paz Subiabre - 16640535 
 
 ## Instrucciones de Ejecución
-Para ejecutar el proyecto se debe inicializar en la carpeta server un make para compilar el código y luego en consola para abrir el servidor la siguiente línea:
+Para ejecutar el proyecto se debe inicializar en la carpeta server el comando make para compilar el código y luego ejecutar la siguiente línea:
 ./server -i <ip_address> -p <tcp_port>
 
-luego en otra consola para inicializar un cliente se ejecuta make y la siguiente línea:
+Paralelamente, para inicializar a un cliente, se debe ejecutar en otra consola el comando make y luego ejecutar la siguiente línea:
 ./client -i <ip_address> -p <tcp_port>
 
-Utilizando en el código actual como address: 0.0.0.0 y port: 8080
+Actualmente se utiliza en el código el address: 0.0.0.0 y port: 8080, por lo que habría que escribir dicha dirección y puesto en las líneas anteriores.
 
-Luego de tener inicializados a los clientes, en consola se debe ingresar los nombres y se asignan los distintos aldeanos a su correspondiente rol. 
-Cuando se encuentra todo listo el líder puede iniciar el juego presionando enter.
+Luego de tener inicializados a el servido y a los clientes, en consola se debe ingresar los nombres de los jugadores (por parte de los clientes) y se asignan los distintos aldeanos a su correspondiente rol. Cuando se encuentra todo listo el líder (cliente que se conecte primero) puede iniciar el juego presionando enter.
 
 Cada jugador en su respectivo turno tendrá acceso a un menú en el cual se encontraran las opciones de Mostrar información, Crear Aldeano, Subir de Nivel, Atacar, Espiar, Robar, Pasar y Rendirse. Cada opción se despegara en la consola acompañada de un numero el cual el jugador deberá apretar según la opción deseada.
 
