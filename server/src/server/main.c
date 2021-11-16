@@ -80,10 +80,10 @@ void* creador_threads(void *atr){
 int main(int argc, char *argv[]){
   int PORT;
   char* IP;
-  if (argc =! 4)
+  if (argc != 5)
   {
-    printf("No se pasaron suficientes argumentos");
-    exit(1);
+    printf("No se pasaron suficientes argumentos\n");
+    return 1;
   }else
   {
     for (int i = 1; i < 5; i = i+2)
@@ -158,6 +158,8 @@ int main(int argc, char *argv[]){
   }
   
   char* game_begin = "inicio el juego";
+  char* response2 = recolectar_recursos(jugadores_array[0]);
+  server_send_message(sockets_array[0], 19, response2);
   server_send_message(sockets_array[0], 1, game_begin);
   
   int my_attention = 0;
@@ -181,7 +183,8 @@ int main(int argc, char *argv[]){
       // Mi atención cambia al otro socket
       my_attention = (my_attention + 1) % n_jugadores;
       server_send_message(sockets_array[my_attention], 2, client_message);
-    }else if (msg_code == 10) //El cliente me envió un mensaje a mi (servidor) para MOSTRAR INFO
+    }
+    else if (msg_code == 10) //El cliente me envió un mensaje a mi (servidor) para MOSTRAR INFO
     {
       printf("entre a code 10 \n");
       char * client_message = server_receive_payload(sockets_array[my_attention]);
@@ -251,7 +254,8 @@ int main(int argc, char *argv[]){
         }
       }      
 
-    }else if (msg_code == 13) //El cliente me envió un mensaje a mi (servidor) para SUBIR NIVEL
+    }
+    else if (msg_code == 13) //El cliente me envió un mensaje a mi (servidor) para SUBIR NIVEL
     {
       printf("entre a code 13 \n");
       printf("recursos comida %i, ciencia%i, oro %i\n", jugadores_array[my_attention]->comida, jugadores_array[my_attention]->ciencia, jugadores_array[my_attention]->oro);
@@ -389,7 +393,9 @@ int main(int argc, char *argv[]){
       // Le enviamos la respuesta
       char * response = "Jugador paso turno";
       server_send_message(sockets_array[my_attention], 11, response);
+      // free(response);
       // Mi atención cambia al otro socket
+
       int jugadores_vivos = 0;
       for (int i = 0; i < n_jugadores; i++)
       {
@@ -402,6 +408,8 @@ int main(int argc, char *argv[]){
         {
           if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
           my_attention = (my_attention + i) % n_jugadores;
+          char* response2 = recolectar_recursos(jugadores_array[my_attention]);
+          server_send_message(sockets_array[my_attention], 19, response2);
           //printf("ganaste\n");
           printf("my attention %i\n", my_attention);
           server_send_message(sockets_array[my_attention], 11, "\nHAZ GANADO\n");
@@ -416,6 +424,8 @@ int main(int argc, char *argv[]){
         {
           if (!jugadores_array[(my_attention + i) % n_jugadores]->eliminado) {
             my_attention = (my_attention + i) % n_jugadores;
+            char* response2 = recolectar_recursos(jugadores_array[my_attention]);
+            server_send_message(sockets_array[my_attention], 19, response2);
             i = 1;
             break;
           }
@@ -434,45 +444,22 @@ int main(int argc, char *argv[]){
       printf("El cliente %d dice: %s\n", my_attention, client_message);
       // Le enviamos la respuesta
       rendirse(jugadores_array[my_attention]);
-      char * response = "Jugador se rindio";
-      server_send_message(sockets_array[my_attention], 11, response);
-      if(my_attention==4){
-        sockets_array[my_attention]=NULL;
-        jugadores_array[my_attention]=NULL;
-      }
-      else if(my_attention==3)
-      {
-        sockets_array[my_attention]=sockets_array[4];
-        jugadores_array[my_attention]=jugadores_array[4];
-        sockets_array[4]=NULL;
-        jugadores_array[4]=NULL;
-      }
-      else if(my_attention==2)
-      {
-        sockets_array[my_attention]=sockets_array[3];
-        jugadores_array[my_attention]=jugadores_array[3];
-        sockets_array[3]=sockets_array[4];
-        jugadores_array[3]=jugadores_array[4];
-        sockets_array[4]=NULL;
-        jugadores_array[4]=NULL;
-      }
-      else if(my_attention==1){
-        sockets_array[my_attention]=sockets_array[2];
-        jugadores_array[my_attention]=jugadores_array[2];
-        sockets_array[2]=sockets_array[3];
-        jugadores_array[2]=jugadores_array[3];
-        sockets_array[3]=sockets_array[4];
-        jugadores_array[3]=jugadores_array[4];
-        sockets_array[4]=NULL;
-        jugadores_array[4]=NULL;
-      }
+      char * response = "Jugador se rindio\n";
+      server_send_message(sockets_array[my_attention], 20, response);
       // Mi atención cambia al otro socket
-      n_jugadores=n_jugadores-1;
-      if(n_jugadores==1){
-        printf("Se termina el juego");
-      }
       my_attention = (my_attention + 1) % n_jugadores;
+      
     }
+    if (msg_code == 19){
+      printf("entre a code 19\n");
+      char * client_message = server_receive_payload(sockets_array[my_attention]);
+      printf("El cliente %d dice: %s\n", my_attention+1, client_message);
+      char* response = recolectar_recursos(jugadores_array[my_attention]);
+      free(client_message);
+      server_send_message(sockets_array[my_attention], 17, response);
+    // free(response);
+    }
+
     printf("------------------\n");
     server_send_message(sockets_array[my_attention], 1, "vuelve a escoger una opcion");
   }

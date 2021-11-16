@@ -39,7 +39,7 @@ struct jugador
 // Inicializar el jugador con los stats iniciales
 Jugador* jugador_init(char* nombre, int id);
 // Se recolectan recursos al inicio del turno
-void recolectar_recursos(Jugador* jug);
+char * recolectar_recursos(Jugador* jug);
 // Asignar aldeano inicialmente
 void asignar_aldeano(Jugador* jug, int tipo);
 // Crear el aldeano segun el tipo requerido (minero, agricultor, ingeniero, guerrero)

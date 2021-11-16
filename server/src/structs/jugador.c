@@ -18,13 +18,13 @@ Jugador* jugador_init(char* nombre, int id){
   // Inicializan en cero y cuando son asignados los aldeanos 
   // los niveles deben en empezar en 1 y se asignan los nueve
   // aldeanos al cada tipo
-  jug->oro = 100;
-  jug->comida = 100;
-  jug->ciencia = 100;
+  jug->oro = 0;
+  jug->comida = 0;
+  jug->ciencia = 0;
   jug->n_mineros = 0;
   jug->n_agricultores = 0;
   jug->n_ingenieros = 0;
-  jug->n_guerreros = 0;
+  jug->n_guerreros = 1;
   jug->nivel_minero = 1;
   jug->nivel_agricultores = 1;
   jug->nivel_ingenieros = 1;
@@ -36,7 +36,7 @@ Jugador* jugador_init(char* nombre, int id){
 
 }
 
-void recolectar_recursos(Jugador* jug){
+char* recolectar_recursos(Jugador* jug){
   
   int new_oro = jug->n_mineros*jug->nivel_minero*2;
   int new_comida = jug->n_agricultores*jug->nivel_agricultores*2;
@@ -45,6 +45,9 @@ void recolectar_recursos(Jugador* jug){
   jug->oro = jug->oro+new_oro;
   jug->comida = jug->comida+new_comida;
   jug->ciencia = jug->ciencia+new_ciencia;
+  char* mensaje = calloc(2000, sizeof(char));
+  sprintf(mensaje, "vuelve a escoger una opcion\nRECOLECION EXITOSA\nHaz recolectado %i de comida\nHaz recolectado %i de oro\nHaz recolectado %i de ciencia\n", new_comida,new_oro,new_ciencia);
+  return mensaje;
 }
 
 void asignar_aldeano(Jugador* jug, int tipo){
@@ -378,6 +381,7 @@ void rendirse(Jugador* jug){
   jug->n_agricultores = 0;
   jug->n_ingenieros = 0;
   jug->n_guerreros = 0;
+  jug->eliminado = true;
   //Aqui hay que eliminar al jugador de los jugadores activos
 
 }
