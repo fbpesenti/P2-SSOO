@@ -7,21 +7,6 @@
 #include "conection.h"
 #include "../structs/jugador.h"
 
-
-char * revert(char * message){
-  //Se invierte el mensaje
-  
-  int len = strlen(message) + 1;
-  char * response = malloc(len);
-
-  for (int i = 0; i < len-1; i++)
-  {
-    response[i] = message[len-2-i];
-  }
-  response[len-1] = '\0';
-  return response;
-}
-
 int n_jugadores = 0;
 int ready = 0;
 Jugador* jugadores_array[4];
@@ -149,6 +134,7 @@ int main(int argc, char *argv[]){
         {
           server_send_message(sockets_array[i], 5, "Comienza el juego");
         }
+        pthread_cancel(creador);
         break;
       }else
       {
@@ -160,6 +146,7 @@ int main(int argc, char *argv[]){
   char* game_begin = "inicio el juego";
   char* response2 = recolectar_recursos(jugadores_array[0]);
   server_send_message(sockets_array[0], 19, response2);
+  free(response2);
   server_send_message(sockets_array[0], 1, game_begin);
   
   int my_attention = 0;
@@ -204,6 +191,7 @@ int main(int argc, char *argv[]){
       sprintf(server_message, "MOSTRANDO INFORMACION\n\nINFORMACION RECURSOS\n- Comida: %i\n- Oro: %i\n- Ciencia: %i\nINFORMACION ALDEANOS\n- Agricultores: %i - Nivel: %i\n- Mineros: %i - Nivel: %i\n- Guerreros: %i - Nivel: %i\n- Ingenieros: %i - Nivel: %i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_ataque, n_ingenieros, nivel_ingenieros);
       //sprintf(server_message, "%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i\n", comida, oro, ciencia, n_agricultores, nivel_agricultores, n_mineros, nivel_minero, n_guerreros, nivel_guerreros, n_ingenieros, nivel_ingenieros);
       server_send_message(sockets_array[my_attention], 10, server_message);
+      free(server_message);
   
     }
     else if (msg_code == 11) //El cliente me envió un mensaje a mi (servidor) para CREAR ALDEANO
@@ -359,6 +347,7 @@ int main(int argc, char *argv[]){
         char * response = espiar(jugadores_array[my_attention], jugadores_array[client_message_int]);
         free(client_message);
         server_send_message(sockets_array[my_attention], 15, response);
+        free(response);
       }
       else {
         server_send_message(sockets_array[my_attention], 15, "\nESTE JUGADOR YA HA SIDO ELIMINADO: NO SE PUEDE ESPIAR\n");
@@ -375,11 +364,14 @@ int main(int argc, char *argv[]){
       recurso_robar[0] = client_message[1];
       int id_robar_int = atoi(id_robar);
       int recurso_robar_int = atoi(recurso_robar);
+      free(id_robar);
+      free(recurso_robar);
 
       if (jugadores_array[id_robar_int]->eliminado==false){
         char * response = robar(jugadores_array[my_attention], jugadores_array[id_robar_int], recurso_robar_int);
         free(client_message);
         server_send_message(sockets_array[my_attention], 16, response);
+        free(response);
       }
       else {
         server_send_message(sockets_array[my_attention], 16, "\nESTE JUGADOR YA HA SIDO ELIMINADO: NO SE PUEDE ROBAR\n");      
@@ -410,6 +402,7 @@ int main(int argc, char *argv[]){
           my_attention = (my_attention + i) % n_jugadores;
           char* response2 = recolectar_recursos(jugadores_array[my_attention]);
           server_send_message(sockets_array[my_attention], 19, response2);
+          free(response2);
           //printf("ganaste\n");
           printf("my attention %i\n", my_attention);
           server_send_message(sockets_array[my_attention], 11, "\nHAZ GANADO\n");
@@ -426,6 +419,7 @@ int main(int argc, char *argv[]){
             my_attention = (my_attention + i) % n_jugadores;
             char* response2 = recolectar_recursos(jugadores_array[my_attention]);
             server_send_message(sockets_array[my_attention], 19, response2);
+            free(response2);
             i = 1;
             break;
           }
@@ -457,6 +451,7 @@ int main(int argc, char *argv[]){
       char* response = recolectar_recursos(jugadores_array[my_attention]);
       free(client_message);
       server_send_message(sockets_array[my_attention], 17, response);
+      free(response);
     // free(response);
     }
 
