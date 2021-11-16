@@ -67,8 +67,8 @@ Los msg code con su respectiva explicación son los siguientes:
 - El recolectar recursos se muestra en todos los turnos menos en el primero que se parte con 100 de cada recurso
 - Cuando el jugador necesita el id de otro jugador en atacar/espiar/robar el jugador sabe que va de 0 a n-1, siendo n la cantidad de jugadores.
 -
-## FUNCIONAMIENTO
+## FUNCIONAMIENTO (Para facilitar corrección)
 - Rendirse solo funciona con dos clientes
-- Cunado un jugador gana no se acaba el flujo del juego, solo avisa al ganador que gano
+- Cunado un jugador gana no se acaba el flujo del juego, solo avisa al ganador que ganó
 
 
