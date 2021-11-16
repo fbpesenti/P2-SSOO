@@ -14,7 +14,7 @@ Para ejecutar el proyecto se debe inicializar en la carpeta server el comando ma
 Paralelamente, para inicializar a un cliente, se debe ejecutar en otra consola el comando make y luego ejecutar la siguiente línea:
 ./client -i <ip_address> -p <tcp_port>
 
-Actualmente se utiliza en el código el address: 0.0.0.0 y port: 8080, por lo que habría que escribir dicha dirección y puesto en las líneas anteriores.
+Actualmente se utiliza en el código el address: 0.0.0.0 y port: 8080, por lo que habría que escribir dicha dirección y puesto en las líneas anteriores. Cabe destacar que existen dos archivos independientes makefile, uno para el servidor y otro para el cliente.
 
 Luego de tener inicializados a el servido y a los clientes, en consola se debe ingresar los nombres de los jugadores (por parte de los clientes) y se asignan los distintos aldeanos a su correspondiente rol. Cuando se encuentra todo listo el líder (cliente que se conecte primero) puede iniciar el juego presionando enter.
 
@@ -24,7 +24,7 @@ Cada jugador en su respectivo turno tendrá acceso a un menú en el cual se enco
 El tipo de paquete utilizado es de tipo string para todos los casos.
 
 ## Decisiones de diseño
-En primer lugar, el servidor es quien realiza toda la lógica del juego, mientras que el cliente es quien escoge que decisiones tomar. Se dispone de dos carpetas independientes, client y server. A continuación, se explicara cada una de ellas.
+En primer lugar, el servidor es quien realiza toda la lógica del juego, mientras que el cliente es quien escoge que decisiones tomar. Se dispone de dos carpetas independientes, client y server, cada una con . A continuación, se explicara cada una de ellas.
 
 ### Server
 Como se mencionó anteriormente, el servidor es quien se encarga de la lógica del juego, por lo que se incluye el archivo jugador.c en donde se construye la lógica de cada una de las opciones las cuales podría escoger el cliente, junto con los archivos comunication.c y conection.c en donde se maneja las conexiones con el cliente.
