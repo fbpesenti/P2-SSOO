@@ -21,7 +21,7 @@ Luego de tener inicializados a el servido y a los clientes, en consola se debe i
 Cada jugador en su respectivo turno tendrá acceso a un menú en el cual se encontrarán las opciones de Mostrar información, Crear Aldeano, Subir de Nivel, Atacar, Espiar, Robar, Pasar y Rendirse. Cada opción se despegará en la consola acompañada de un numero el cual el jugador deberá apretar según la opción deseada, ciertas opciones como Crear Aldeano, Subir Nivel, Espiar y Robar, se despliega un sub menú en donde deben precisar sus decisiones respectivas.
 
 ## Paquetes
-Los paquetes utilizados 
+El tipo de paquete utilizado es de tipo string para todos los casos.
 
 ## Decisiones de diseño
 En primer lugar, el servidor es quien realiza toda la lógica del juego, mientras que el cliente es quien escoge que decisiones tomar. Se dispone de dos carpetas independientes, client y server. A continuación, se explicara cada una de ellas.
